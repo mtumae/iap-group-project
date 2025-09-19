@@ -27,14 +27,16 @@ class Forms{
     public function login(){
         ?>
        <form>
-       <div class="form-group">
-        <label for="loginUsername">Username</label>
-        <input type="text" class="form-control" id="loginUsername" name="username" placeholder="Enter username" required>
+        <form method="post" action="login.php">
+        <div class="form-group">
+        <label for="loginemail">Email address</label>
+        <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Enter email" required>
         </div>
         <div class="form-group">
         <label for="loginPassword">Password</label>
         <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" required>
         </div>
+        <button type="submit" class="btn">LOGIN</button>
         </form>
         <?php
     }
