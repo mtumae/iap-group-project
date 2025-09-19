@@ -23,4 +23,19 @@ class Forms{
         <?php
 
     }
+
+    public function login(){
+        ?>
+       <form>
+       <div class="form-group">
+        <label for="loginUsername">Username</label>
+        <input type="text" class="form-control" id="loginUsername" name="username" placeholder="Enter username" required>
+        </div>
+        <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" required>
+        </div>
+        </form>
+        <?php
+    }
 }
