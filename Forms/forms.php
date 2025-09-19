@@ -25,8 +25,20 @@ class Forms{
     }
 
     public function login(){
-        ?>
-       <form>
+        //error handling 
+       $error = '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        if (empty($email) || empty($password)) {
+            $error = 'Please enter both email and password.';
+        }
+    
+    }
+    ?>
+    <?php if ($error): ?>
+        <div style="color: red; margin-bottom: 10px;"><?php echo $error; ?></div>
+    <?php endif; ?>
         <form method="post" action="login.php">
         <div class="form-group">
         <label for="loginemail">Email address</label>
