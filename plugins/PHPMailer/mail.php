@@ -7,25 +7,22 @@ use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader (created by composer, not included with PHPMailer)
 require 'vendor/autoload.php';
-
-//Create an instance; passing `true` enables exceptions
-//$mail = new PHPMailer(true);
+require_once 'templates/email.php';
 
 
 class Mail{
-    //array = [email, recepients(maybe??), subject, body]
-    function sendMail($conf){
+    function sendMail($email){
         $mail = new PHPMailer(true);
         try {
             //Server settings
             $mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = $conf['mail_host'];                       //Set the SMTP server to send through
+            $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = $conf['mail_username'];                  //SMTP username
-            $mail->Password   = $conf['mail_password'];                     //SMTP password
+            $mail->Username   = 'mtume2016@gmail.com';                  //SMTP username
+            $mail->Password   = 'dvvayrkawbggrzlb';                     //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = $conf['port'];                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
             $mail->setFrom('mtume2016@gmail.com', 'Mailer');
@@ -45,8 +42,8 @@ class Mail{
 
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = $subject;
-            $mail->Body    = $body;
+            $mail->Subject = "Here is the subject";
+            $mail->Body    = "Test email body";
             $mail->AltBody = 'Alternative text';
 
             $mail->send();
@@ -75,12 +72,16 @@ class Mail{
             //Content
             $mail->isHTML(true);
             $mail->Subject = "Welcome to ICS 2.2! Account Verification";
-            $mail->Body    = "Hello " . $name . ",<br><br>" .
-                             "You requested an account on ICS 2.2.<br><br>" .
-                             "In order to use this account you need to <a href=\"#\">Click here</a> to complete the registration process<br><br>" .
-                             "Regards,<br>" .
-                             "Systems Admin<br>" .
-                             "ICS 2.2";
+            $mail->Body    = 
+            "
+            <div style='padding: 20px;  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.19);  border-radius: 20px; background-color:#d6dcdc; text-align: center;'>
+            <div style='color: #6E5BAA; display: block; font-family: hybrea, proxima-nova, 'helvetica neue', helvetica, arial, geneva, sans-serif; font-size: 32px; font-weight: 200;'>
+                <p>Account verification code:</p>
+                <h1>{{VERIFICATION_CODE}}</h1>
+                <p>This code will expire soon.</p>
+            </div>
+            </div>
+            ";
             $mail->AltBody = "none";
 
             $mail->send();

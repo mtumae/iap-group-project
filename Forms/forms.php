@@ -1,6 +1,10 @@
 <?php 
+require_once 'plugins/PHPMailer/mail.php';
+
 
 class Forms{
+
+
 
     public function signup(){
         ?>
@@ -23,6 +27,7 @@ class Forms{
         <button name='signup-form' type="submit" class="btn btn-primary">Submit</button>
         </form>
         <?php
+        
 
         if(isset($_POST['signup-form'])){
         $errors = [];
@@ -48,9 +53,11 @@ class Forms{
         }
 
         if (empty($errors)) {
+            $mail = new Mail();
             $code = rand(100000, 999999);
             echo "<p style='color: green;'>Form submitted successfully!</p>";
             echo $code;
+            $mail->sendMail($_POST['email']);
             $this->twofactorauth($code);
 
         } else {
