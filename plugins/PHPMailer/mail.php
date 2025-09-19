@@ -8,10 +8,13 @@ use PHPMailer\PHPMailer\Exception;
 //Load Composer's autoloader (created by composer, not included with PHPMailer)
 require 'vendor/autoload.php';
 require_once 'templates/email.php';
+require_once 'forms/forms.php';
+$form = new Forms();
+
 
 
 class Mail{
-    function sendMail($email){
+    function verifyAccount($email, $code){
         $mail = new PHPMailer(true);
         try {
             //Server settings
@@ -32,65 +35,35 @@ class Mail{
             // $mail->addCC('cc@example.com');
             // $mail->addBCC('bcc@example.com');
 
-            if(!empty($recepients)){
-                foreach($recepients as $recipient){
-                    $mail->addCC($recipient);
-                }
-            }
+            // if(!empty($recepients)){
+            //     foreach($recepients as $recipient){
+            //         $mail->addCC($recipient);
+            //     }
+            // }
             //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
             //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = "Here is the subject";
-            $mail->Body    = "Test email body";
+            $mail->Subject = "2 Factor Verification Code";
+            $mail->Body    = "
+            <div style='padding: 20px;  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.19);  border-radius: 20px; background-color:#d6dcdc; text-align: center;'>
+                <div style='color: #6E5BAA; display: block; font-family: hybrea, proxima-nova, 'helvetica neue', helvetica, arial, geneva, sans-serif; font-size: 32px; font-weight: 200;'>
+                    <p>Account verification code:</p>
+                    <h1>".$code."</h1>
+                    <p>This code will expire soon.</p>
+                </div>
+            </div>";
             $mail->AltBody = 'Alternative text';
 
             $mail->send();
-            echo 'Message has been sent';
+            echo '<p>Message has been sent</p>';
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            echo "<p style='color: red;'>Message could not be sent. Mailer Error: {$mail->ErrorInfo}</p>";
         }
     }
 
-    public function verifyEmail($conf, $emailTo, $name){
-        $mail = new PHPMailer(true);
-        try {
-            //Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_OFF;
-            $mail->isSMTP();
-            $mail->Host       = $conf['mail_host'];                       
-            $mail->SMTPAuth   = true;                                
-            $mail->Username   = $conf['mail_username'];
-            $mail->Password   = $conf['mail_password'];
-            $mail->SMTPSecure = $conf['mail_secure'];
-            $mail->Port       = $conf['port'];
-            $mail->setFrom('mtume2016@gmail.com', 'ICS 2.2');
-            $mail->addAddress($emailTo);
-
-
-            //Content
-            $mail->isHTML(true);
-            $mail->Subject = "Welcome to ICS 2.2! Account Verification";
-            $mail->Body    = 
-            "
-            <div style='padding: 20px;  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.19);  border-radius: 20px; background-color:#d6dcdc; text-align: center;'>
-            <div style='color: #6E5BAA; display: block; font-family: hybrea, proxima-nova, 'helvetica neue', helvetica, arial, geneva, sans-serif; font-size: 32px; font-weight: 200;'>
-                <p>Account verification code:</p>
-                <h1>{{VERIFICATION_CODE}}</h1>
-                <p>This code will expire soon.</p>
-            </div>
-            </div>
-            ";
-            $mail->AltBody = "none";
-
-            $mail->send();
-            echo 'Message has been sent';
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
-
-    }
+    
 
 
 
