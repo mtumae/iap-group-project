@@ -3,6 +3,11 @@
 
 class Components{
     public function header(){
+        ?>
+        <header>
+            <h1>Welcome!</h1>
+        </header>
+        <?php
 
     }
     public function form_content($conf, $form) {
