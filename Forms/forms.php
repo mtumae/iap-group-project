@@ -32,9 +32,11 @@ class Forms{
         $password = $_POST['password'] ?? '';
         if (empty($email) || empty($password)) {
             $error = 'Please enter both email and password.';
+        } elseif ($email !== $validEmail || $password !== $validPassword) {
+            $error = 'Invalid email or password.';
         }
-    
     }
+    
     ?>
     <?php if ($error): ?>
         <div style="color: red; margin-bottom: 10px;"><?php echo $error; ?></div>
