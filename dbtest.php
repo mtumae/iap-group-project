@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';       
-require_once 'DBConnection.php'; 
+require_once 'ClassAutoLoad.php'; 
 
 // Create Database object
 $db = new Database($conf);
@@ -23,7 +23,7 @@ if ($conn) {
         echo "No users found or query failed.";
     }
 
-    // Try an INSERT test query (comment it after testing!)
+    // Try an INSERT test query 
     /*
     $insertId = $db->insert(
         "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)",

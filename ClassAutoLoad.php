@@ -3,7 +3,7 @@
 require 'Plugins/PHPMailer/vendor/autoload.php';
 require_once 'config.php';
 
-$directories = ["Forms", "Layouts", "Services"];
+$directories = ["Forms", "Layouts", "Services". "Database"];
 
 spl_autoload_register(function ($className) use ($directories) {
     foreach ($directories as $directory) {
@@ -16,6 +16,6 @@ spl_autoload_register(function ($className) use ($directories) {
 });
 
 // Create Objects
-$ObjForm   = new Form();
+$ObjForms   = new Forms();
 $ObjLayout = new layouts();
 $ObjSendMail = new Mail();
