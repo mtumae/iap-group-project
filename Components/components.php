@@ -48,7 +48,7 @@ class Components{
     public function footer(){
 
         ?>
-        <footer>
+     <footer>
     <div class="footer">
     <div class="row">
     <a href="#"><i class="fa fa-facebook"></i></a>

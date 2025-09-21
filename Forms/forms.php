@@ -4,7 +4,7 @@ class Forms{
 
     public function signup(){
         ?>
-    <form>
+    <form action = "signup_action.php">
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -14,14 +14,33 @@ class Forms{
             <label for="exampleInputPassword1">Password</label>
             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
         </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
+        <!--  -->
         <button type="submit" class="btn btn-primary">Submit</button>
         <div id="login-redirect-container">
                 <a href="/IAP-GROUP-PROJECT/Forms/login.php">Already have an account? Login</a>
-            </div>
+        </div>
+        <footer>
+    <div class="footer">
+    <div class="row">
+    <a href="#"><i class="fa fa-facebook"></i></a>
+    <a href="#"><i class="fa fa-instagram"></i></a>
+    <a href="#"><i class="fa fa-youtube"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    </div>
+
+    <div class="row">
+    <ul>
+    <li><a href="#">Contact us</a></li>
+    <li><a href="#">Our Services</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+    <li><a href="#">Terms & Conditions</a></li>
+    <li><a href="#">Career</a></li>
+    </ul>
+    </div>
+
+    <!--  -->
+    </div>
+    </footer>
     </form>
         <?php
 
@@ -44,7 +63,7 @@ class Forms{
     <?php if ($error): ?>
         <div style="color: red; margin-bottom: 10px;"><?php echo $error; ?></div>
     <?php endif; ?>
-    <form method="post" action="login.php">
+    <form method="post" action="login_action.php">
         <div class="form-group">
         <label for="loginemail">Email address</label>
         <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Enter email" required>
@@ -56,6 +75,28 @@ class Forms{
         <button type="submit" class="btn">LOGIN</button>
         <div id="create-account-container"><a href="/IAP-GROUP-PROJECT/Forms/signup.php">Don't have an account? Create one</a><br><br></div>
 
+        <footer>
+    <div class="footer">
+    <div class="row">
+    <a href="#"><i class="fa fa-facebook"></i></a>
+    <a href="#"><i class="fa fa-instagram"></i></a>
+    <a href="#"><i class="fa fa-youtube"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    </div>
+
+    <div class="row">
+    <ul>
+    <li><a href="#">Contact us</a></li>
+    <li><a href="#">Our Services</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+    <li><a href="#">Terms & Conditions</a></li>
+    <li><a href="#">Career</a></li>
+    </ul>
+    </div>
+
+    <!--  -->
+    </div>
+    </footer>
     </form>
         <?php
     }
