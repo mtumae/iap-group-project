@@ -54,4 +54,8 @@ class Forms{
         </form>
         <?php
     }
-}
+<<<<<<< Updated upstream
+
+=======
+
+>>>>>>> Stashed changes
