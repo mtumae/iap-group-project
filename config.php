@@ -1,6 +1,6 @@
 <?php
 
-$conf['site_name'] = 'MediMeet';
+$conf['site_name'] = 'StrathMart';
 $conf['site_url'] = 'http://localhost';
 $conf['admin_email'] = 'admin@strathmart.com';
 
