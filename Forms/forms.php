@@ -78,5 +78,9 @@ class Forms{
         </form>
         <?php
 
+<<<<<<< HEAD
     }
 }
+=======
+    }}
+>>>>>>> cf4d4b0ea678a3720e149a7729906b50a41aa3bf
