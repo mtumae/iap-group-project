@@ -7,8 +7,8 @@ use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader (created by composer, not included with PHPMailer)
 require 'vendor/autoload.php';
-require_once 'templates/email.php';
-require_once 'forms/forms.php';
+// require_once 'templates/email.php';
+// require_once 'forms/forms.php';
 $form = new Forms();
 
 
