@@ -6,6 +6,8 @@ $form = new Forms();
 $component = new Components();
 
 $component->header();
+$component->form_content();
+$component->footer();
 
 
 
