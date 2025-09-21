@@ -78,5 +78,4 @@ class Forms{
         </form>
         <?php
 
-    }
-}
+    }}
