@@ -78,28 +78,4 @@ class Forms{
         </form>
         <?php
 
-        if(isset($_POST['2fa-form'])){
-        $errors = [];
-
-        //check if field is filled
-        if (empty($_POST['verification-code'])) {
-            $errors[] = "Please enter the verification code!";
-        }
-
-        //check if code is exactly 6 digits long and only contains numbers
-        if (!preg_match('/^\d{6}$/', $_POST['verification-code'])) {
-            $errors[] = "Invalid verification code! Must be exactly 6 digits long.";
-        }
-
-        if (empty($errors) and $_POST['verification-code'] === $code) {
-            echo "<p style='color: green;'>Verification successful! Redirecting to profile...</p>";
-        } else {
-            // Display errors to the user and re-display the form
-            foreach ($errors as $error) {
-                echo "<p style='color: red;'>$error</p>";
-            }
-        }
-
     }
-}
-}
