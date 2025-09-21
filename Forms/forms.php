@@ -1,4 +1,6 @@
 <?php 
+require_once 'plugins/PHPMailer/mail.php';
+
 
 class Forms{
 
@@ -23,7 +25,6 @@ class Forms{
         <button name='signup-form' type="submit" class="btn btn-primary">Submit</button>
         </form>
         <?php
-
         if(isset($_POST['signup-form'])){
         $errors = [];
 
@@ -48,11 +49,12 @@ class Forms{
         }
 
         if (empty($errors)) {
+            $mail = new Mail();
             $code = rand(100000, 999999);
             echo "<p style='color: green;'>Form submitted successfully!</p>";
             echo $code;
+            $mail->verifyAccount($_POST['email'], $code);
             $this->twofactorauth($code);
-
         } else {
             // Display errors to the user and re-display the form
             foreach ($errors as $error) {
@@ -67,12 +69,11 @@ class Forms{
     public function twofactorauth($code){
         ?>
         <form action="" method="POST">
-        <div class="form-group">
-            <label for="verification-code">Verification Code</label>
-            <input type="text" class="form-control" id="verification-code" name='verification-code' aria-describedby="codeHelp" placeholder="Enter verification code">
-            <small id="codeHelp" class="form-text text-muted">Please enter the 6-digit code sent to your email.</small>
-        </div>
-       
+            <div class="form-group">
+                <label for="verification-code">Verification Code</label>
+                <input type="text" class="form-control" id="verification-code" name='verification-code' aria-describedby="codeHelp" placeholder="Enter verification code">
+                <small id="codeHelp" class="form-text text-muted">Please enter the 6-digit code sent to your email.</small>
+            </div>
         <button name='2fa-form' type="submit" class="btn btn-primary">Submit</button>
         </form>
         <?php
@@ -91,7 +92,7 @@ class Forms{
         }
 
         if (empty($errors) and $_POST['verification-code'] === $code) {
-            echo "<p style='color: green;'>Verification successful!</p>";
+            echo "<p style='color: green;'>Verification successful! Redirecting to profile...</p>";
         } else {
             // Display errors to the user and re-display the form
             foreach ($errors as $error) {
