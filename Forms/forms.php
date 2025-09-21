@@ -79,3 +79,4 @@ class Forms{
         <?php
 
     }
+}
