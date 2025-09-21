@@ -6,3 +6,18 @@ $form = new Forms();
 
 $form->signup();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//merging with main
