@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_SESSION['2fa_code'], $_SESSION['pending_user_id'], $_SESSION['pending_username'], $_SESSION['pending_email']);
 
         // Redirect to dashboard
-        header("Location: /IAP_PROJECT/users.php");
+        //header("Location: /IAP_PROJECT/users.php");
+        echo "2 factor a authentication completed successfully!";
         exit();
     } else {
         $error = "Invalid or expired verification code.";
@@ -39,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Two-Factor Authentication</title>
 </head>
 <body>
+    <div style="">
     <h2>Enter 2FA Code</h2>
     <form method="POST">
         <label for="verification_code">Verification Code:</label>
@@ -49,5 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (!empty($error)) : ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
+    <div>
 </body>
 </html>

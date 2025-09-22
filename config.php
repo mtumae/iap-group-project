@@ -6,10 +6,13 @@ $conf['admin_email'] = 'admin@icsccommunity.com';
 
 // Database Configuration
 $conf['db_type'] = 'mysqli';
+
+
 $conf['db_host'] = 'localhost';
 $conf['db_user'] = 'root';
-$conf['db_pass'] = 'Passwords$uck0';
-$conf['db_name'] = 'iap_db';
+$conf['db_pass'] = 'mtume';
+$conf['db_name'] = 'mysql';
+
 
 $conf['mail_type'] = 'smtp'; // Options: 'smtp' or 'mail'
 $conf['smtp_host'] = 'smtp.gmail.com';
