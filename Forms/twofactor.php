@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Two-Factor Authentication</title>
@@ -48,9 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Verify</button>
     </form>
 
+<<<<<<< HEAD
     <?php if (!empty($error)) : ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
     <div>
+=======
+    
+>>>>>>> 84742bac37cbde4adcd0b3c1e32f94923813a278
 </body>
 </html>

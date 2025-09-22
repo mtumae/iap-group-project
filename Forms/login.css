@@ -118,3 +118,12 @@ footer {
 .footer ul li a:hover {
     color: #fff;
 }
+
+header {
+    background: #23272b;
+    border-radius: 0 0 16px 16px;
+    text-align: center;
+    padding: 32px 0 16px 0;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
