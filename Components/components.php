@@ -1,6 +1,6 @@
 <?php
 
-require_once 'forms/forms.php';
+require_once __DIR__ . '/../ClassAutoLoad.php';
 $form = new Forms();
 
 class Components{

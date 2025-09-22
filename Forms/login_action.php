@@ -35,7 +35,7 @@ try {
             $mail->verifyAccount($email, $code);
 
             
-            header("Location: /IAP-GROUP-PROJECT/Forms/twofactor.php");
+            header("Location: /iap-projectIAP-GROUP-PROJECT/Forms/twofactor.php");
             exit();
         } else {
             echo "Invalid password.";
