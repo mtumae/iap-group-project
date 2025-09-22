@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Ensure the user actually came from login (has pending session data)
+// Ensure the user came from login
 if (!isset($_SESSION['2fa_code'], $_SESSION['pending_user_id'])) {
     header("Location: /IAP_PROJECT/login.php");
     exit();
@@ -12,19 +12,15 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $entered = trim($_POST['verification_code'] ?? '');
 
-    // Check for exactly 6 digits
     if (!preg_match('/^\d{6}$/', $entered)) {
         $error = "Invalid code format. Please enter a 6-digit number.";
     } elseif ($entered == $_SESSION['2fa_code']) {
-        // Move pending data into final session
         $_SESSION['user_id']   = $_SESSION['pending_user_id'];
         $_SESSION['username']  = $_SESSION['pending_username'];
         $_SESSION['email']     = $_SESSION['pending_email'];
 
-        // Clear temporary session values
         unset($_SESSION['2fa_code'], $_SESSION['pending_user_id'], $_SESSION['pending_username'], $_SESSION['pending_email']);
 
-        // Redirect to dashboard
         header("Location: /iap-project/iap-group-project/users.php");
         exit();
     } else {
@@ -34,20 +30,106 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Two-Factor Authentication</title>
+    <style>
+        /* ===== Dashboard / Users.css styling ===== */
+        body {
+            background: #212529; 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        #dashboard {
+            width: 100%;
+            margin: 0;
+            padding: 32px;
+            background: #23272b; 
+            min-height: 100vh;   
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .twofa-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 32px;
+            background: #2c3034;
+            border-radius: 12px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .twofa-container h2 {
+            font-size: 2rem;
+            margin-bottom: 24px;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+        }
+
+        .twofa-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .twofa-container input[type="text"] {
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #343a40;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .twofa-container input[type="text"]::placeholder {
+            color: #ccc;
+        }
+
+        .twofa-container button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .twofa-container button:hover {
+            background: #0056b3;
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h2>Enter 2FA Code</h2>
-    <form method="POST">
-        <label for="verification_code">Verification Code:</label>
-        <input type="text" id="verification_code" name="verification_code" maxlength="6" required>
-        <button type="submit">Verify</button>
-    </form>
+    <div id="dashboard">
+        <div class="twofa-container">
+            <h2>Enter 2FA Code</h2>
 
-    <?php if (!empty($error)) : ?>
-        <p style="color:red;"><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
+            <?php if (!empty($error)) : ?>
+                <p class="error-message"><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
+
+            <form method="POST">
+                <input type="text" id="verification_code" name="verification_code" maxlength="6" placeholder="6-digit code" required>
+                <button type="submit">Verify</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
