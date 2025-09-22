@@ -7,6 +7,9 @@ $component = new Components();
 
 $component->header();
 $component->form_content();
+?>
+<link rel="stylesheet" href="index.css">
+<?php
 // $component->footer();
 
 
