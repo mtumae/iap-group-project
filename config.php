@@ -11,7 +11,7 @@ $conf['db_type'] = 'mysqli';
 $conf['db_host'] = 'localhost';
 $conf['db_user'] = 'root';
 $conf['db_pass'] = 'mtume';
-$conf['db_name'] = 'mysql';
+$conf['db_name'] = 'taskapp';
 
 
 $conf['mail_type'] = 'smtp'; // Options: 'smtp' or 'mail'

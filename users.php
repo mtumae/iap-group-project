@@ -25,7 +25,6 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-    <!-- ✅ Use a separate stylesheet for dashboard -->
     <link rel="stylesheet" href="users.css">
 </head>
 <body>
