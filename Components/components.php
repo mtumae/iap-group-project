@@ -26,12 +26,12 @@ class Components{
                 } elseif ($current === '/IAP-GROUP-PROJECT/Forms/login.php') {
                     $form->signup();
                 } else {
-                    $form->signup();
+                    $form->login();
                 }
                 ?>
             </div>
 
-            <div id="info-section">
+            <!-- <div id="info-section">
                 <h2>Extra Content</h2>
                 <p>
                     This is an additional section where you can place text, 
@@ -41,14 +41,14 @@ class Components{
                     in your own CSS.
                 </p>
                 <button type="button">Example button</button>
-            </div>
+            </div> -->
         </div>
         <?php
     }
     public function footer(){
 
         ?>
-        <footer>
+     <footer>
     <div class="footer">
     <div class="row">
     <a href="#"><i class="fa fa-facebook"></i></a>
@@ -67,9 +67,7 @@ class Components{
     </ul>
     </div>
 
-    <div class="row">
-    INFERNO Copyright © 2021 Inferno - All rights reserved || Designed By: Mahesh 
-    </div>
+    <!--  -->
     </div>
     </footer>
         <?php
