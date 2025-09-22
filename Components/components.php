@@ -1,8 +1,8 @@
 <?php
 
 require_once 'forms/forms.php';
-$form = new Forms();
 
+$forms = new Forms();
 class Components{
     public function header(){
         ?>
@@ -13,21 +13,27 @@ class Components{
 
     }
     public function form_content() {
-        global $form;
+        global $forms;
+        $formType = $_GET['form'] ?? 'login';
         ?>
         <div id="page-content">
             <div id="form-section">
                 <?php
                
-                $current = $_SERVER['PHP_SELF'];
+               switch ($formType) {
+                case 'signup':
+                    $forms->signup();
+                    break;
+                case 'login':
+                   $forms->login();
+                    break;
+                case 'twofa':
+                    $forms->twofa();
+                    break;
+                default:
+                    echo "Unknown form type.";
 
-                if ($current === '/IAP-GROUP-PROJECT/Forms/signup.php') {
-                    $form->signup();
-                } elseif ($current === '/IAP-GROUP-PROJECT/Forms/login.php') {
-                    $form->signup();
-                } else {
-                    $form->login();
-                }
+               }
                 ?>
             </div>
 

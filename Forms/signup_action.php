@@ -19,7 +19,7 @@
         $stmt->execute();
         $stmt->close();
        
-        header("Location: login.php");
+        header("Location: /IAP-GROUP-PROJECT/index.php?form=login");
         exit();
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
