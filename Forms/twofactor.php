@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// Ensure the user actually came from login (has pending session data)
 if (!isset($_SESSION['2fa_code'], $_SESSION['pending_user_id'])) {
-    header("Location: /IAP_PROJECT/login.php");
+    header("Location: /IAP-GROUP-PROJECT/index.php?form=login");
     exit();
 }
 
@@ -25,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_SESSION['2fa_code'], $_SESSION['pending_user_id'], $_SESSION['pending_username'], $_SESSION['pending_email']);
 
         // Redirect to dashboard
+        //header("Location: /IAP_PROJECT/users.php");
         header("Location: /iap-group-project/users.php");
         exit();
     } else {
@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Two-Factor Authentication</title>
 </head>
 <body>
+    <div style="">
     <h2>Enter 2FA Code</h2>
     <form method="POST">
         <label for="verification_code">Verification Code:</label>
