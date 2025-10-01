@@ -21,7 +21,7 @@ class Forms{
         <!--  -->
         <button type="submit" class="btn btn-primary">Submit</button>
         <div id="login-redirect-container">
-                <a href="/IAP-PROJECT/iap-group-project/Forms/login.php">Already have an account? Login</a>
+                <a href="/iap-group-project/Forms/login.php">Already have an account? Login</a>
         </div>
         <footer>
     <div class="footer">
@@ -52,7 +52,7 @@ class Forms{
 
     public function login() {
         ?>
-        <form method="post" action="/iap-project/IAP-GROUP-PROJECT/Forms/login_action.php">
+        <form method="post" action="/IAP-GROUP-PROJECT/Forms/login_action.php">
             <div class="form-group">
                 <label for="loginEmail">Email address</label>
                 <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Enter email" required>
@@ -66,7 +66,7 @@ class Forms{
             <button type="submit" class="btn btn-primary">LOGIN</button>
     
             <div id="create-account-container">
-                <a href="/iap-project/IAP-GROUP-PROJECT/Forms/signup.php">Don't have an account? Create one</a><br><br>
+                <a href="/IAP-GROUP-PROJECT/Forms/signup.php">Don't have an account? Create one</a><br><br>
             </div>
     
             <footer>
