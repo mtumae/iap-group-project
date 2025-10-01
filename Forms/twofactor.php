@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_SESSION['2fa_code'], $_SESSION['pending_user_id'], $_SESSION['pending_username'], $_SESSION['pending_email']);
 
         // Redirect to dashboard
-        header("Location: /iap-project/iap-group-project/users.php");
+        header("Location: /iap-group-project/users.php");
         exit();
     } else {
         $error = "Invalid or expired verification code.";

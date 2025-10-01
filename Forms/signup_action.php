@@ -1,7 +1,7 @@
 <?php
     require_once '../Validator.php' ;
     require_once 'forms.php';
-    require_once 'C:\Apache24\htdocs\iap-project\IAP-GROUP-PROJECT\ClassAutoLoad.php';
+    require_once 'C:\Apache24\htdocs\iap-group-project\IAP-GROUP-PROJECT\ClassAutoLoad.php';
 
     $name = $_POST['username'];
     $email = $_POST['email'];
@@ -12,7 +12,7 @@
     exit(); // stop execution if password is weak
     }
     //including the database operation for inserting a user into the db
-    require_once 'C:\Apache24\htdocs\iap-project\IAP-GROUP-PROJECT\ClassAutoLoad.php';
+    require_once 'C:\Apache24\htdocs\iap-group-project\IAP-GROUP-PROJECT\ClassAutoLoad.php';
 
     $db = new database($conf);
     $conn = $db->getConnection();
