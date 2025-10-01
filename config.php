@@ -6,6 +6,8 @@ $conf['admin_email'] = 'strathmart@gmail.com';
 
 // Database Configuration
 $conf['db_type'] = 'mysqli';
+
+
 $conf['db_host'] = 'localhost';
 $conf['db_user'] = 'root';
 $conf['db_pass'] = 'Passwords$uck0';
