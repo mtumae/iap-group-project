@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// Ensure the user actually came from login (has pending session data)
 if (!isset($_SESSION['2fa_code'], $_SESSION['pending_user_id'])) {
-    header("Location: /IAP_PROJECT/login.php");
+    header("Location: /IAP-GROUP-PROJECT/index.php?form=login");
     exit();
 }
 
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_SESSION['2fa_code'], $_SESSION['pending_user_id'], $_SESSION['pending_username'], $_SESSION['pending_email']);
 
         // Redirect to dashboard
-        header("Location: /iap-project/iap-group-project/users.php");
+        header("Location: /iap_project/users.php");
         exit();
     } else {
         $error = "Invalid or expired verification code.";

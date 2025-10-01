@@ -52,7 +52,7 @@ class Forms{
 
     public function login() {
         ?>
-        <form method="post" action="/iap-project/IAP-GROUP-PROJECT/Forms/login_action.php">
+        <form method="post" action="/IAP-GROUP-PROJECT/Forms/login_action.php">
             <div class="form-group">
                 <label for="loginEmail">Email address</label>
                 <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Enter email" required>
