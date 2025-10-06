@@ -2,9 +2,9 @@
 session_start();
 require_once __DIR__ . '/ClassAutoLoad.php';
 
-// Ensure user completed 2FA
+
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /iap-project/IAP-GROUP-PROJECT/Forms/login.php");
+    header("Location: /iap-group-project/IAP-GROUP-PROJECT/Forms/login.php");
     exit();
 }
 

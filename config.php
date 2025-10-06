@@ -10,9 +10,8 @@ $conf['db_type'] = 'mysqli';
 
 $conf['db_host'] = 'localhost';
 $conf['db_user'] = 'root';
-$conf['db_pass'] = 'mtume';
-$conf['db_name'] = 'taskapp';
-
+$conf['db_pass'] = '';
+$conf['db_name'] = 'strathhub';
 
 $conf['mail_type'] = 'smtp'; // Options: 'smtp' or 'mail'
 $conf['smtp_host'] = 'smtp.gmail.com';

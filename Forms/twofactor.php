@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// Ensure the user actually came from login (has pending session data)
 if (!isset($_SESSION['2fa_code'], $_SESSION['pending_user_id'])) {
-    header("Location: /IAP_PROJECT/login.php");
+    header("Location: /IAP-GROUP-PROJECT/index.php?form=login");
     exit();
 }
 
