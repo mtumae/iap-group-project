@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// Ensure the user came from login
 if (!isset($_SESSION['2fa_code'], $_SESSION['pending_user_id'])) {
-    header("Location: /IAP_PROJECT/login.php");
+    header("Location: /IAP-GROUP-PROJECT/index.php?form=login");
     exit();
 }
 
@@ -21,7 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         unset($_SESSION['2fa_code'], $_SESSION['pending_user_id'], $_SESSION['pending_username'], $_SESSION['pending_email']);
 
-        header("Location: /iap-project/iap-group-project/users.php");
+        // Redirect to dashboard
+        //header("Location: /IAP_PROJECT/users.php");
+        header("Location: /iap-group-project/users.php");
         exit();
     } else {
         $error = "Invalid or expired verification code.";
@@ -29,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- <!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Two-Factor Authentication</title>
@@ -117,19 +118,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div id="dashboard">
-        <div class="twofa-container">
-            <h2>Enter 2FA Code</h2>
+    <div style="">
+    <h2>Enter 2FA Code</h2>
+    <form method="POST">
+        <label for="verification_code">Verification Code:</label>
+        <input type="text" id="verification_code" name="verification_code" maxlength="6" required>
+        <button type="submit">Verify</button>
+    </form>
 
-            <?php if (!empty($error)) : ?>
-                <p class="error-message"><?= htmlspecialchars($error) ?></p>
-            <?php endif; ?>
-
-            <form method="POST">
-                <input type="text" id="verification_code" name="verification_code" maxlength="6" placeholder="6-digit code" required>
-                <button type="submit">Verify</button>
-            </form>
-        </div>
-    </div>
+    
 </body>
-</html>
+</html> -->

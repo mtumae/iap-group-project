@@ -18,5 +18,5 @@ class Database {
     // return raw connection
     public function getConnection() {
         return $this->conn;
-    }
+    }   
 }

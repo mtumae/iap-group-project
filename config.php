@@ -6,10 +6,12 @@ $conf['admin_email'] = 'strathmart@gmail.com';
 
 // Database Configuration
 $conf['db_type'] = 'mysqli';
+
+
 $conf['db_host'] = 'localhost';
 $conf['db_user'] = 'root';
-$conf['db_pass'] = '1234';
-$conf['db_name'] = 'strathmart';
+$conf['db_pass'] = '';
+$conf['db_name'] = 'strathhub';
 
 $conf['mail_type'] = 'smtp'; // Options: 'smtp' or 'mail'
 $conf['smtp_host'] = 'smtp.gmail.com';

@@ -18,14 +18,10 @@ try {
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
-
         if (password_verify($password, $user['password'])) {
-           
             $code = rand(100000, 999999);
-
             $_SESSION['pending_user_id'] = $user['id'];
             $_SESSION['pending_username'] = $user['username'];
             $_SESSION['pending_email'] = $email;
@@ -35,7 +31,7 @@ try {
             $mail->verifyAccount($email, $code);
 
             
-            header("Location: /IAP-GROUP-PROJECT/Forms/twofactor.php");
+            header("Location: /IAP-GROUP-PROJECT/index.php?form=twofa");
             exit();
         } else {
             echo "Invalid password.";
