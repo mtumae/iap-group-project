@@ -3,7 +3,7 @@
 class Forms{
     public function signup(){
         ?>
-        <form  action ="/Forms/signup_action.php" method="POST">
+        <form  action ="Forms/signup_action.php" method="POST">
         <h1 style="text-align:center;">Sign up</h1>
             <div class="form-group">
                     <label  for="username">Full Name</label>
