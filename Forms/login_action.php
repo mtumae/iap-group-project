@@ -20,11 +20,8 @@ try {
     $result = $stmt->get_result();
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
-
         if (password_verify($password, $user['password'])) {
-           
             $code = rand(100000, 999999);
-
             $_SESSION['pending_user_id'] = $user['id'];
             $_SESSION['pending_username'] = $user['username'];
             $_SESSION['pending_email'] = $email;
