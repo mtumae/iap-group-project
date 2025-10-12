@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../ClassAutoLoad.php';
+require_once __DIR__ . '/../DBConnection.php';
 
 
 $email = trim($_POST['email'] ?? '');
@@ -11,16 +12,15 @@ if (empty($email) || empty($password)) {
 }
 
 $db = new database($conf);
-$conn = $db->getConnection();
+$conn = $db->connect();
 
 try {
-    $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-
+    
+    $stmt = $db->query("SELECT id, username, password FROM users WHERE email = ?", [$email]);
+    // $stmt->bind_param("s", $email);
+    // $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($user) {
         if (password_verify($password, $user['password'])) {
            
             $code = rand(100000, 999999);
@@ -43,8 +43,8 @@ try {
         echo "No account found with that email.";
     }
 
-    $stmt->close();
-    $db->close();
+    // $stmt->close();
+    // $db->close();
 
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
