@@ -22,9 +22,7 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($user) {
         if (password_verify($password, $user['password'])) {
-           
             $code = rand(100000, 999999);
-
             $_SESSION['pending_user_id'] = $user['id'];
             $_SESSION['pending_username'] = $user['username'];
             $_SESSION['pending_email'] = $email;
