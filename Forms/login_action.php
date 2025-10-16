@@ -41,7 +41,7 @@ try {
     }
 
     $stmt->close();
-    $db->close();
+    //$db->close();
 
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();

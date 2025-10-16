@@ -1,8 +1,9 @@
 <?php
     require_once '../Validator.php' ;
     require_once 'forms.php';
+    require_once '../config.php';
 
-    require_once 'C:\Apache24\htdocs\iap-group-project\IAP-GROUP-PROJECT\ClassAutoLoad.php';
+    require_once '../ClassAutoLoad.php';
 
     $name = $_POST['username'];
     $email = $_POST['email'];
@@ -13,7 +14,7 @@
     // exit(); // stop execution if password is weak
     // }
     //including the database operation for inserting a user into the db
-    require_once 'C:\Apache24\htdocs\IAP-GROUP-PROJECT\ClassAutoLoad.php';
+    require_once 'C:\Apache24\htdocs\iap-group-project\ClassAutoLoad.php';
 
     $db = new database($conf);
     $conn = $db->getConnection();
@@ -24,8 +25,8 @@
         $stmt->bind_param("sss", $name, $email, $hashed_password);
         $stmt->execute();
         $stmt->close();
-       
-        header("Location: /IAP-GROUP-PROJECT/index.php?form=login");
+
+        header("Location: /iap-group-project/index.php?form=login");
         exit();
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();

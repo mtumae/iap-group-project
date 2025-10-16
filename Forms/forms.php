@@ -1,9 +1,11 @@
 <?php 
 
 class Forms{
+    
+
     public function signup(){
         ?>
-        <form  action ="/Forms/signup_action.php" method="POST">
+        <form  action ="Forms/signup_action.php" method="POST">
         <h1 style="text-align:center;">Sign up</h1>
             <div class="form-group">
                     <label  for="username">Full Name</label>
@@ -25,10 +27,9 @@ class Forms{
             <div id="login-redirect-container">
                     <a href="?form=login">Already have an account? Login</a>
             </div>
-    </div>
+            </div>
         </form>
         <?php
-
     }
 
     public function login() {
@@ -69,6 +70,80 @@ class Forms{
             </div>
         <?php
     }
-    
+
+    public function AddItemsForm($config){   
+        $db = new Database($config);
+        $categories = $db->getAllCategories();
+      
+        ?>
+        <form  method="post" enctype="multipart/form-data">
+
+        
+            <h1 style="text-align:center;">Add Item</h1>
+                    <div class="mb-3">
+                    <label for="formFile" class="form-label">Add an image of the item</label>
+                    <input class="form-control" type="file" id="item-image" name="item-image" accept="image/*">
+                    </div>
+        
+                <div class="mb-3">
+                <label for="item-name" class="form-label">Item Name</label>
+                <input type="text" class="form-control" id="item-name" name="item_name" >
+                </div>
+
+
+                <div class="mb-3">
+                <label for="item-description" class="form-label">Item Description</label>
+                <textarea class="form-control" id="item-description" name="item-description" rows="3"></textarea>
+                </div>
+        
+                <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Quantity</label>
+                <input type="number" class="form-control" id="exampleFormControlInput1" name="quantity" min="1" max="30" value="1">
+                </div>
+
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="category" class="form-select" aria-label="Default select example">
+                    <option selected>Open this select menu</option>
+                    <?php foreach ($categories as $category): ?>
+                            <option style="padding:10px;" value="<?php echo htmlspecialchars($category['category_name']); ?>">
+                                <?php echo htmlspecialchars($category['category_name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                </select>
+                </div>
+            <button type="submit" name="submit_button" value="Submit" class="btn btn-primary">Add Item</button>
+    </form>
+            <?php
+            if(isset($_POST['submit_button'])){
+                $db = new Database($config);
+                if(isset($_SESSION['user_id'])){
+                    $db->addItem($_SESSION['user_id'], $_POST['item_name'], $_POST['quantity'], $_POST['item-description'], (int)array_search('food', array_column($categories, $_POST['category']))+1);
+                    echo "
+                    <div class=\"alert alert-success d-flex align-items-center\" role=\"alert\">
+                    <svg class=\"bi flex-shrink-0 me-2\" width=\"24\" height=\"24\" role=\"img\" aria-label=\"Success:\"><use xlink:href=\"#check-circle-fill\"/></svg>
+                    <div>
+                        {$_POST['item_name']} added successfully!
+                    </div>
+                    </div>
+                ";
+                }   
+                else{
+                    echo "<div style=\"background-color:red;\" class=\"toast\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\">
+                            <div class=\"toast-header\">
+                                <img src=\"...\" class=\"rounded me-2\" alt=\"...\">
+                                <strong class=\"me-auto\">Bootstrap</strong>
+                                <small class=\"text-muted\">11 mins ago</small>
+                                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button>
+                            </div>
+                            <div class=\"toast-body\">
+                                Failed to add item
+                            </div>
+                            </div>
+                ";
+                }
+
+            }
+
     }
 
+}
