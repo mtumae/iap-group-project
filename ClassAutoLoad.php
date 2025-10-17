@@ -3,7 +3,7 @@
 // require 'Plugins/PHPMailer/vendor/autoload.php';
 require_once 'config.php';
 
-$directories = ["Forms", "plugins/Services" ,"Database","templates", "Components"];
+$directories = ["Forms", "plugins/Services" ,"templates", "Components"];
 
 spl_autoload_register(function ($className) use ($directories) {
     foreach ($directories as $directory) {
