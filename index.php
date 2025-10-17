@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once 'forms/forms.php';
 require_once 'components/components.php';
 $form = new Forms();

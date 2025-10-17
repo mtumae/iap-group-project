@@ -64,7 +64,43 @@ class Mail{
     }
 
     
+// New method for sending the password reset code
+    function sendPasswordResetCode($email, $code){
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;             //Enable verbose debug output
+            $mail->isSMTP();                                //Send using SMTP
+            $mail->Host      = 'smtp.gmail.com';             //Set the SMTP server to send through
+            $mail->SMTPAuth  = true;                        //Enable SMTP authentication
+            $mail->Username  = 'indradamenace@gmail.com';             //SMTP username
+            $mail->Password  = 'fpbymeevckombqnt';                          //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port      = 465;                                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
+            //Recipients
+            $mail->setFrom('mtume2016@gmail.com', 'StudentMarketplace');
+            $mail->addAddress($email);              //Name is optional
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = "Password Reset Code";
+            $mail->Body    = "
+            <div style='padding: 20px;  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.19);  border-radius: 20px; background-color:#d6dcdc; text-align: center;'>
+                <div style='color: #6E5BAA; display: block; font-family: hybrea, proxima-nova, 'helvetica neue', helvetica, arial, geneva, sans-serif; font-size: 32px; font-weight: 200;'>
+                    <p>Your password reset code is:</p>
+                    <h1>".$code."</h1>
+                    <p>This code will expire in 5 minutes. If you did not request a password reset, you can safely ignore this email.</p>
+                </div>
+            </div>";
+            $mail->AltBody = 'Password Reset Code: ' . $code . ' (Expires in 5 minutes).';
+
+            $mail->send();
+            echo '<p>Message has been sent</p>';
+        } catch (Exception $e) {
+            echo "<p style='color: red;'>Message could not be sent. Mailer Error: {$mail->ErrorInfo}</p>";
+        }
+    }
 
 
    

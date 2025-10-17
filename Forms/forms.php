@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Forms{
     public function signup(){
@@ -12,14 +12,13 @@ class Forms{
             <div class="form-group">
                 <label for="exampleInputEmail1">Email</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="email">
-               
+
             </div>
             <div class="form-group">
                 <label  for="exampleInputPassword1">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1"  name="password">
-                
+
             </div>
-            <!--  -->
             <div style="text-align:center;">
             <button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Sign up</button>
             <div id="login-redirect-container">
@@ -39,7 +38,7 @@ class Forms{
                 <label for="loginEmail">Email address</label>
                 <input type="email" class="form-control" id="loginEmail" name="email"  required>
             </div>
-    
+
             <div class="form-group">
                 <label for="loginPassword">Password</label>
                 <input type="password" class="form-control" id="loginPassword" name="password"  required>
@@ -47,7 +46,8 @@ class Forms{
             <div style="text-align:center;">
                 <button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Login</button>
                 <div id="create-account-container">
-                    <a href="?form=signup">Don't have an account? Create one</a><br><br>
+                    <a href="?form=signup">Don't have an account? Create one</a><br>
+                    <a href="?form=forgot_password">Forgot Password?</a><br><br>
                 </div>
             </div>
         </form>
@@ -69,6 +69,90 @@ class Forms{
             </div>
         <?php
     }
-    
+
+    // NEW METHOD 1: Request Password Reset (Email)
+    public function forgotPassword(){
+        ?>
+        <form method="POST" action="Forms/forgot_password_action.php">
+            <h1 style="text-align:center;">Reset Password</h1>
+            <p style="text-align:center;">Enter your email to receive a 6-digit verification code.</p>
+            <div class="form-group">
+                <label for="forgotEmail">Email address</label>
+                <input type="email" class="form-control" id="forgotEmail" name="email" required>
+            </div>
+            <div style="text-align:center;">
+                <button type="submit" class="btn btn-primary">Send Code</button>
+                <div id="login-redirect-container">
+                    <a href="?form=login">Back to Login</a>
+                </div>
+            </div>
+        </form>
+        <?php
     }
 
+    // NEW METHOD 2: Enter the 6-digit reset code
+    // Inside class Forms{...}
+
+public function resetCodeForm(){
+    // Check for errors passed via the URL
+    $error_message = '';
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] === 'InvalidOrExpiredCode') {
+            $error_message = "Error: Invalid or expired verification code. Please try again.";
+        } elseif ($_GET['error'] === 'InvalidCodeFormat') {
+            $error_message = "Error: Invalid code format. Please enter a 6-digit number.";
+        }
+        // You can add other error types here if needed
+    }
+
+    ?>
+    <div class="twofa-container">
+        <form style="padding:40px;text-align:center;" method="POST" action="Forms/reset_code_action.php">
+            <h1>Password Reset Code</h1>
+            <p>Enter the 6-digit code sent to your email.</p>
+            
+            <?php if (!empty($error_message)) : ?>
+                <p style="color:red; text-align:center;"><?= htmlspecialchars($error_message) ?></p>
+            <?php endif; ?>
+
+            <input style="height:80px;color:white;text-align:center;background-color:#23262b;border:none;font-size:30px;width:100%;" type="text" id="reset_code" name="reset_code" maxlength="6" placeholder="000 - 000" required>
+            <button class="btn btn-primary" type="submit">Verify Code</button>
+        </form>
+    </div>
+    <?php
+}
+
+   // Inside class Forms{...}
+
+public function newPasswordForm(){
+    // $error is a global variable, but we'll check the URL parameter directly.
+    $error_message = '';
+    if (isset($_GET['error']) && $_GET['error'] === 'PasswordsDoNotMatch') {
+        $error_message = "Error: The passwords you entered do not match. Please try again.";
+    }
+
+    ?>
+    <form method="POST" action="Forms/new_password_action.php">
+        <h1 style="text-align:center;">Set New Password</h1>
+        <p style="text-align:center;">Enter and confirm your new password.</p>
+        
+        <?php if (!empty($error_message)) : ?>
+            <p style="color:red; text-align:center;"><?= htmlspecialchars($error_message) ?></p>
+        <?php endif; ?>
+
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" class="form-control" id="newPassword" name="new_password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+        </div>
+        <div style="text-align:center;">
+            <button type="submit" class="btn btn-primary">Change Password</button>
+        </div>
+    </form>
+    <?php
+}
+
+}
