@@ -12,23 +12,40 @@ class Components{
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
         </head>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Student Marketplace</a>
+        <nav class="navbar navbar-expand-lg " style="background-color:#0F172A">
+        <div class="container-fluid" style="background-color:#0F172A">
+            <a class="navbar-brand" href="#"><span style="color: #ffffff">Strath</span><span style="color:#3B82F6">Mart</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
+            <style>
+  a.nav-link {
+    color: #9C9C9C;
+    text-decoration: none;
+  }
+
+  a.nav-link:hover {
+    color: white;
+  }
+</style>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li class="nav-item">
-                <a class="nav-link" href="#">Marketplace</a>
+                <a class="nav-link"  href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
+                <a class="nav-link"  href="Pages/Home.php">Buy</a>
                 </li>
+                <li>
+                    <a class="nav-link"  href="#">Sell</a>
+                </li>
+               
             </ul>
-            </div>
+            <span class="navbar-text">
+                <a href="?form=login"><button class="btn btn-primary" type="button">Browse</button></a>
+                <a href="?form=signup"><button class="btn btn-primary" type="button" style="background-color:black">Sell Now</button></a>
+        </div>
         </div>
         </nav>
         <?php
