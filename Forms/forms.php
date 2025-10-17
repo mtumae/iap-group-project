@@ -16,8 +16,8 @@ class Forms{
             </div>
             <div class="form-group">
                 <label  for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1"  name="password">
-
+                <input type="password" class="form-control" id="signupPassword" onkeyup="checkPasswordStrength(this.value, 'signup-strength')" name="password">
+                <div id="signup-strength" style="margin-top: 5px; font-size: 0.9em;"></div>
             </div>
             <div style="text-align:center;">
             <button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Sign up</button>
@@ -155,3 +155,50 @@ public function newPasswordForm(){
 }
 
 }
+?>
+
+<script>
+    function checkPasswordStrength(password, indicatorId) {
+        const indicator = document.getElementById(indicatorId);
+        let strength = 0;
+        let feedback = "Weak";
+        let color = "red";
+
+       
+        if (password.length >= 8) {
+            strength += 1;
+        }
+
+       
+        if (password.match(/[a-z]/) && password.match(/[A-Z]/)) {
+            strength += 1;
+        }
+
+        if (password.match(/\d/)) {
+            strength += 1;
+        }
+
+    
+        if (password.match(/[^a-zA-Z\d\s]/)) {
+            strength += 1;
+        }
+
+        
+        if (password.length === 0) {
+            feedback = "";
+            color = "transparent";
+        } else if (strength < 2) {
+            feedback = "Weak (Minimum 8 chars and mixed case recommended)";
+            color = "red";
+        } else if (strength === 2 || strength === 3) {
+            feedback = "Medium";
+            color = "orange";
+        } else if (strength === 4) {
+            feedback = "Strong";
+            color = "green";
+        }
+
+        indicator.innerHTML = 'Strength: ' + feedback;
+        indicator.style.color = color;
+    }
+</script>
