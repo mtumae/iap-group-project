@@ -4,7 +4,7 @@ require_once __DIR__ . '/ClassAutoLoad.php';
 
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /iap-group-project/IAP-GROUP-PROJECT/Forms/login.php");
+    header("Location: /iap-group-project/Forms/login.php");
     exit();
 }
 

@@ -32,13 +32,13 @@ class Components{
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li class="nav-item">
-                <a class="nav-link"  href="#">Home</a>
+                <a class="nav-link"  href="Home.php">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link"  href="Pages/Home.php">Buy</a>
+                <a class="nav-link"  href="#">Buy</a>
                 </li>
                 <li>
-                    <a class="nav-link"  href="#">Sell</a>
+                    <a class="nav-link"  href="Pages/sell.php">Sell</a>
                 </li>
                
             </ul>
