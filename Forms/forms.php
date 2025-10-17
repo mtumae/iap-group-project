@@ -70,7 +70,7 @@ class Forms{
         <?php
     }
 
-    // NEW METHOD 1: Request Password Reset (Email)
+    
     public function forgotPassword(){
         ?>
         <form method="POST" action="Forms/forgot_password_action.php">
@@ -90,11 +90,10 @@ class Forms{
         <?php
     }
 
-    // NEW METHOD 2: Enter the 6-digit reset code
-    // Inside class Forms{...}
+ 
 
 public function resetCodeForm(){
-    // Check for errors passed via the URL
+   
     $error_message = '';
     if (isset($_GET['error'])) {
         if ($_GET['error'] === 'InvalidOrExpiredCode') {
@@ -102,7 +101,7 @@ public function resetCodeForm(){
         } elseif ($_GET['error'] === 'InvalidCodeFormat') {
             $error_message = "Error: Invalid code format. Please enter a 6-digit number.";
         }
-        // You can add other error types here if needed
+       
     }
 
     ?>
@@ -122,10 +121,10 @@ public function resetCodeForm(){
     <?php
 }
 
-   // Inside class Forms{...}
+   
 
 public function newPasswordForm(){
-    // $error is a global variable, but we'll check the URL parameter directly.
+   
     $error_message = '';
     if (isset($_GET['error']) && $_GET['error'] === 'PasswordsDoNotMatch') {
         $error_message = "Error: The passwords you entered do not match. Please try again.";
