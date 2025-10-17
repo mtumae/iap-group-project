@@ -1,5 +1,5 @@
 <?php
-    require_once '../Validator.php' ;
+    // require_once '../Validator.php' ;
     require_once 'forms.php';
 
     require_once 'C:\Apache24\htdocs\IAP-GROUP-PROJECT\ClassAutoLoad.php';
