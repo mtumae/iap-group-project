@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 class Forms{
     
 
     public function signup(){
         ?>
+        <form  action ="Forms/signup_action.php" method="POST">
         <form  action ="Forms/signup_action.php" method="POST">
         <h1 style="text-align:center;">Sign up</h1>
             <div class="form-group">
@@ -14,14 +15,13 @@ class Forms{
             <div class="form-group">
                 <label for="exampleInputEmail1">Email</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="email">
-               
+
             </div>
             <div class="form-group">
                 <label  for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1"  name="password">
-                
+                <input type="password" class="form-control" id="signupPassword" onkeyup="checkPasswordStrength(this.value, 'signup-strength')" name="password">
+                <div id="signup-strength" style="margin-top: 5px; font-size: 0.9em;"></div>
             </div>
-            <!--  -->
             <div style="text-align:center;">
             <button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Sign up</button>
             <div id="login-redirect-container">
@@ -40,7 +40,7 @@ class Forms{
                 <label for="loginEmail">Email address</label>
                 <input type="email" class="form-control" id="loginEmail" name="email"  required>
             </div>
-    
+
             <div class="form-group">
                 <label for="loginPassword">Password</label>
                 <input type="password" class="form-control" id="loginPassword" name="password"  required>
@@ -48,7 +48,8 @@ class Forms{
             <div style="text-align:center;">
                 <button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Login</button>
                 <div id="create-account-container">
-                    <a href="?form=signup">Don't have an account? Create one</a><br><br>
+                    <a href="?form=signup">Don't have an account? Create one</a><br>
+                    <a href="?form=forgot_password">Forgot Password?</a><br><br>
                 </div>
             </div>
         </form>
@@ -71,79 +72,135 @@ class Forms{
         <?php
     }
 
-    public function AddItemsForm($config){   
-        $db = new Database($config);
-        $categories = $db->getAllCategories();
-      
+    
+    public function forgotPassword(){
         ?>
-        <form  method="post" enctype="multipart/form-data">
-
-        
-            <h1 style="text-align:center;">Add Item</h1>
-                    <div class="mb-3">
-                    <label for="formFile" class="form-label">Add an image of the item</label>
-                    <input class="form-control" type="file" id="item-image" name="item-image" accept="image/*">
-                    </div>
-        
-                <div class="mb-3">
-                <label for="item-name" class="form-label">Item Name</label>
-                <input type="text" class="form-control" id="item-name" name="item_name" >
+        <form method="POST" action="Forms/forgot_password_action.php">
+            <h1 style="text-align:center;">Reset Password</h1>
+            <p style="text-align:center;">Enter your email to receive a 6-digit verification code.</p>
+            <div class="form-group">
+                <label for="forgotEmail">Email address</label>
+                <input type="email" class="form-control" id="forgotEmail" name="email" required>
+            </div>
+            <div style="text-align:center;">
+                <button type="submit" class="btn btn-primary">Send Code</button>
+                <div id="login-redirect-container">
+                    <a href="?form=login">Back to Login</a>
                 </div>
-
-
-                <div class="mb-3">
-                <label for="item-description" class="form-label">Item Description</label>
-                <textarea class="form-control" id="item-description" name="item-description" rows="3"></textarea>
-                </div>
-        
-                <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Quantity</label>
-                <input type="number" class="form-control" id="exampleFormControlInput1" name="quantity" min="1" max="30" value="1">
-                </div>
-
-                <label for="category" class="form-label">Category</label>
-                <select id="category" name="category" class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <?php foreach ($categories as $category): ?>
-                            <option style="padding:10px;" value="<?php echo htmlspecialchars($category['category_name']); ?>">
-                                <?php echo htmlspecialchars($category['category_name']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                </select>
-                </div>
-            <button type="submit" name="submit_button" value="Submit" class="btn btn-primary">Add Item</button>
-    </form>
-            <?php
-            if(isset($_POST['submit_button'])){
-                $db = new Database($config);
-                if(isset($_SESSION['user_id'])){
-                    $db->addItem($_SESSION['user_id'], $_POST['item_name'], $_POST['quantity'], $_POST['item-description'], (int)array_search('food', array_column($categories, $_POST['category']))+1);
-                    echo "
-                    <div class=\"alert alert-success d-flex align-items-center\" role=\"alert\">
-                    <svg class=\"bi flex-shrink-0 me-2\" width=\"24\" height=\"24\" role=\"img\" aria-label=\"Success:\"><use xlink:href=\"#check-circle-fill\"/></svg>
-                    <div>
-                        {$_POST['item_name']} added successfully!
-                    </div>
-                    </div>
-                ";
-                }   
-                else{
-                    echo "<div style=\"background-color:red;\" class=\"toast\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\">
-                            <div class=\"toast-header\">
-                                <img src=\"...\" class=\"rounded me-2\" alt=\"...\">
-                                <strong class=\"me-auto\">Bootstrap</strong>
-                                <small class=\"text-muted\">11 mins ago</small>
-                                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button>
-                            </div>
-                            <div class=\"toast-body\">
-                                Failed to add item
-                            </div>
-                            </div>
-                ";
-                }
-
-            }
-
+            </div>
+        </form>
+        <?php
     }
 
+ 
+
+public function resetCodeForm(){
+   
+    $error_message = '';
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] === 'InvalidOrExpiredCode') {
+            $error_message = "Error: Invalid or expired verification code. Please try again.";
+        } elseif ($_GET['error'] === 'InvalidCodeFormat') {
+            $error_message = "Error: Invalid code format. Please enter a 6-digit number.";
+        }
+       
+    }
+
+    ?>
+    <div class="twofa-container">
+        <form style="padding:40px;text-align:center;" method="POST" action="Forms/reset_code_action.php">
+            <h1>Password Reset Code</h1>
+            <p>Enter the 6-digit code sent to your email.</p>
+            
+            <?php if (!empty($error_message)) : ?>
+                <p style="color:red; text-align:center;"><?= htmlspecialchars($error_message) ?></p>
+            <?php endif; ?>
+
+            <input style="height:80px;color:white;text-align:center;background-color:#23262b;border:none;font-size:30px;width:100%;" type="text" id="reset_code" name="reset_code" maxlength="6" placeholder="000 - 000" required>
+            <button class="btn btn-primary" type="submit">Verify Code</button>
+        </form>
+    </div>
+    <?php
 }
+
+   
+
+public function newPasswordForm(){
+   
+    $error_message = '';
+    if (isset($_GET['error']) && $_GET['error'] === 'PasswordsDoNotMatch') {
+        $error_message = "Error: The passwords you entered do not match. Please try again.";
+    }
+
+    ?>
+    <form method="POST" action="Forms/new_password_action.php">
+        <h1 style="text-align:center;">Set New Password</h1>
+        <p style="text-align:center;">Enter and confirm your new password.</p>
+        
+        <?php if (!empty($error_message)) : ?>
+            <p style="color:red; text-align:center;"><?= htmlspecialchars($error_message) ?></p>
+        <?php endif; ?>
+
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" class="form-control" id="newPassword" name="new_password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+        </div>
+        <div style="text-align:center;">
+            <button type="submit" class="btn btn-primary">Change Password</button>
+        </div>
+    </form>
+    <?php
+}
+
+}
+?>
+
+<script>
+    function checkPasswordStrength(password, indicatorId) {
+        const indicator = document.getElementById(indicatorId);
+        let strength = 0;
+        let feedback = "Weak";
+        let color = "red";
+
+       
+        if (password.length >= 8) {
+            strength += 1;
+        }
+
+       
+        if (password.match(/[a-z]/) && password.match(/[A-Z]/)) {
+            strength += 1;
+        }
+
+        if (password.match(/\d/)) {
+            strength += 1;
+        }
+
+    
+        if (password.match(/[^a-zA-Z\d\s]/)) {
+            strength += 1;
+        }
+
+        
+        if (password.length === 0) {
+            feedback = "";
+            color = "transparent";
+        } else if (strength < 2) {
+            feedback = "Weak (Minimum 8 chars and mixed case recommended)";
+            color = "red";
+        } else if (strength === 2 || strength === 3) {
+            feedback = "Medium";
+            color = "orange";
+        } else if (strength === 4) {
+            feedback = "Strong";
+            color = "green";
+        }
+
+        indicator.innerHTML = 'Strength: ' + feedback;
+        indicator.style.color = color;
+    }
+</script>

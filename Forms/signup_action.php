@@ -1,5 +1,5 @@
 <?php
-    require_once '../Validator.php' ;
+    // require_once '../Validator.php' ;
     require_once 'forms.php';
     require_once '../config.php';
 
@@ -17,10 +17,10 @@
     require_once 'C:\Apache24\htdocs\iap-group-project\ClassAutoLoad.php';
 
     $db = new database($conf);
-    $conn = $db->getConnection();
+    $conn = $db->connect();
     
     try{
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $stmt->bind_param("sss", $name, $email, $hashed_password);
         $stmt->execute();

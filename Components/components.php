@@ -20,43 +20,85 @@ class Components{
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
+            <style>
+  a.nav-link {
+    color: #9C9C9C;
+    text-decoration: none;
+  }
+
+  a.nav-link:hover {
+    color: white;
+  }
+</style>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li class="nav-item">
-                <a class="nav-link" href="#">Marketplace</a>
+                <a class="nav-link"  href="/iap-group-project/Pages/Home.php">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
+                <a class="nav-link"  href="#">Buy</a>
                 </li>
+                <li>
+                    <a class="nav-link"  href="/iap-group-project/Pages/sell.php">Sell</a>
+                </li>
+               
             </ul>
-            </div>
+            <span class="navbar-text">
+                <a href="?form=login"><button class="btn btn-primary" type="button">Browse</button></a>
+                <a href="?form=signup"><button class="btn btn-primary" type="button" style="background-color:black">Sell Now</button></a>
+        </div>
         </div>
         </nav>
         <?php
 
     }
-    public function form_content() {
-        global $forms;
-        $formType = $_GET['form'] ?? 'login';
-        ?>
-        <div style="display:grid; gap:20px; justify-content: center; padding:15px;" id="page-content">
-            <div id="form-section">
-                <?php
-               switch ($formType) {
+   public function form_content() {
+    global $forms;
+    $formType = $_GET['form'] ?? 'login';
+    
+    // Start the session here if it hasn't been started in index.php
+    // session_start(); 
+    // ^ IMPORTANT: Ensure session_start() is at the very top of index.php
+
+    ?>
+    <div style="display:grid; gap:20px; justify-content: center; padding:15px;" id="page-content">
+        <div id="form-section">
+            <?php
+
+            switch ($formType) {
                 case 'signup':
                     $forms->signup();
                     break;
                 case 'login':
-                   $forms->login();
+                    $forms->login();
                     break;
                 case 'twofa':
                     $forms->twofa();
                     break;
+                
+                // START: NEW PASSWORD RESET CASES
+                case 'forgot_password':
+                    $forms->forgotPassword();
+                    break;
+                case 'resetcode':
+                    $forms->resetCodeForm();
+                    break;
+                case 'newpassword':
+                    // Authorization check: Must have successfully verified the code in the previous step
+                    if (!isset($_SESSION['pending_reset_user_id'])) {
+                        // Redirect to login if unauthorized access is attempted
+                        header("Location: index.php?form=login&error=UnauthorizedAccess");
+                        exit();
+                    }
+                    $forms->newPasswordForm();
+                    break;
+                // END: NEW PASSWORD RESET CASES
+
                 default:
                     echo "Unknown form type.";
-               }
-                ?>
-            </div>
+            }
+            ?>
+        </div>
             <!-- <div id="info-section">
                 <h2>Extra Content</h2>
                 <p>
