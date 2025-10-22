@@ -3,47 +3,46 @@ session_start();
 require_once __DIR__ . '/../ClassAutoLoad.php';
 require_once __DIR__ . '/../DBConnection.php';
 
-
-if(!isset($_SESSION['user_id'])){
+if (!isset($_SESSION['user_id'])) {
     header("Location: /iap-group-project/index.php?form=login");
     exit();
 }
 
 $components = new Components();
 $db = new Database($conf);
-$db->connect(); 
+$db->connect();
 
 $user_id = $_SESSION['user_id'];
 $success_message = '';
 $error_message = '';
 
-
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])){
+// Handle item addition
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
     $item_name = trim($_POST['item_name']);
     $item_description = trim($_POST['item_description']);
-    $item_price = floatval($_POST['item_price']);
-    $item_category = $_POST['item_category'];
-    $item_condition = $_POST['item_condition'];
-    
-    $item_image = '';
-    if(isset($_FILES['item_image']) && $_FILES['item_image']['error'] == 0){
+    $quantity = intval($_POST['quantity']);
+    $category_id = intval($_POST['category_id']);
+    $price = floatval($_POST['price']);
+    $imageUrl = '';
+
+    // ✅ Handle image upload
+    if (isset($_FILES['item_image']) && $_FILES['item_image']['error'] == 0) {
         $allowed_types = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
         $file_type = $_FILES['item_image']['type'];
-        
-        if(in_array($file_type, $allowed_types)){
+
+        if (in_array($file_type, $allowed_types)) {
             $upload_dir = 'images/items/';
-            
-            
-            if(!file_exists($upload_dir)){
+
+            if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
-            
+
             $file_extension = pathinfo($_FILES['item_image']['name'], PATHINFO_EXTENSION);
             $new_filename = uniqid('item_') . '.' . $file_extension;
             $upload_path = $upload_dir . $new_filename;
-            
-            if(move_uploaded_file($_FILES['item_image']['tmp_name'], $upload_path)){
-                $item_image = $upload_path;
+
+            if (move_uploaded_file($_FILES['item_image']['tmp_name'], $upload_path)) {
+                $imageUrl = $upload_path;
             } else {
                 $error_message = "Failed to upload image.";
             }
@@ -51,43 +50,50 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])){
             $error_message = "Invalid file type. Please upload JPG, PNG, or GIF.";
         }
     }
-    
-   
-    if(empty($error_message)){
-        $sql = "INSERT INTO items (item_name, item_description, item_price, item_category, item_condition, item_image, seller_id, created_at) 
+
+    if (empty($error_message)) {
+        // ✅ Use your actual column names
+        $sql = "INSERT INTO items (user_id, item_name, quantity, item_description, category_id, Price, ImageUrl, created_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
-        
-        $result = $db->execute($sql, [$item_name, $item_description, $item_price, $item_category, $item_condition, $item_image, $user_id]);
-        
-        if($result){
+
+        $result = $db->execute($sql, [
+            $user_id,
+            $item_name,
+            $quantity,
+            $item_description,
+            $category_id,
+            $price,
+            $imageUrl
+        ]);
+
+        if ($result) {
             $success_message = "Item added successfully!";
         } else {
-            $error_message = "Failed to add item. Please try again.";
+            $error_message = "Failed to add item. Please check your database connection.";
         }
     }
 }
 
 // Handle item deletion
-if(isset($_GET['delete_item'])){
+if (isset($_GET['delete_item'])) {
     $item_id = intval($_GET['delete_item']);
-    
-    // Verify item belongs to user
-    $item = $db->fetch("SELECT * FROM items WHERE item_id = ? AND seller_id = ?", [$item_id, $user_id]);
-    
-    if($item && count($item) > 0){
-      
-        if(!empty($item[0]['item_image']) && file_exists($item[0]['item_image'])){
-            unlink($item[0]['item_image']);
+
+    $item = $db->fetch("SELECT * FROM items WHERE id = ? AND user_id = ?", [$item_id, $user_id]);
+
+    if ($item && count($item) > 0) {
+        if (!empty($item[0]['ImageUrl']) && file_exists($item[0]['ImageUrl'])) {
+            unlink($item[0]['ImageUrl']);
         }
-        
-        $db->execute("DELETE FROM items WHERE item_id = ?", [$item_id]);
+
+        $db->execute("DELETE FROM items WHERE id = ?", [$item_id]);
         $success_message = "Item deleted successfully!";
     }
 }
 
-// Fetch user's items
-$user_items = $db->fetch("SELECT * FROM items WHERE seller_id = ? ORDER BY created_at DESC", [$user_id]);
+// Fetch user's listed items
+$user_items = $db->fetch("SELECT * FROM items WHERE user_id = ? ORDER BY created_at DESC", [$user_id]);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
