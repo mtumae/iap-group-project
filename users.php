@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/ClassAutoLoad.php';
+require_once __DIR__ . '/DBConnection.php';
+
 
 
 if (!isset($_SESSION['user_id'])) {
@@ -9,12 +11,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $db = new database($conf);
-$conn = $db->getConnection();
+$conn = $db->connect();
 
 try {
     $stmt = $conn->prepare("SELECT id, username, email FROM users");
     $stmt->execute();
-    $result = $stmt->get_result();
+    $items = $db->fetch("SELECT id, username, email FROM users");
+ 
 } catch (Exception $e) {
     die("Database error: " . $e->getMessage());
 }
@@ -48,17 +51,17 @@ try {
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr data-id="<?= $row['id'] ?>">
-                        <td><?= htmlspecialchars($row['id']); ?></td>
-                        <td><?= htmlspecialchars($row['username']); ?></td>
-                        <td><?= htmlspecialchars($row['email']); ?></td>
+                <?php foreach($items as $item){?>
+                    <tr data-id="<?= $item['id'] ?>">
+                        <td><?= htmlspecialchars($item['id']); ?></td>
+                        <td><?= htmlspecialchars($item['username']); ?></td>
+                        <td><?= htmlspecialchars($item['email']); ?></td>
                         <td>
                             <button class="btn btn-sm btn-primary edit-btn">Edit</button>
                             <button class="btn btn-sm btn-danger delete-btn">Delete</button>
                         </td>
                     </tr>
-                <?php endwhile; ?>
+                <?php } ?>
             </tbody>
         </table>
     </div>
