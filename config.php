@@ -22,3 +22,4 @@ $conf['smtp_secure'] = 'ssl';
 
 // Site Language
 $conf['site_lang'] = 'en';
+

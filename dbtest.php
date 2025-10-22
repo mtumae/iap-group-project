@@ -1,6 +1,6 @@
 <?php
-require_once 'config.php';       
-require_once 'ClassAutoLoad.php'; 
+require_once '../config.php';       
+require_once '../ClassAutoLoad.php'; 
 
 // Create Database object
 $db = new Database($conf);

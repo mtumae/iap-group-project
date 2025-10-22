@@ -45,3 +45,8 @@ create table orders(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 )
+
+
+
+ALTER TABLE items
+ADD price INT NOT NULL DEFAULT 0;
