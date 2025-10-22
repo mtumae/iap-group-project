@@ -148,7 +148,7 @@ $components->header();
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1 class="display-5">Start Selling on Campus</h1>
-        <p>Join other students making money from items they no longer need</p>
+        <p>Join other students making money from items</p>
     </div>
 </div>
 

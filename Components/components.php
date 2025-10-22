@@ -51,29 +51,53 @@ class Components{
         <?php
 
     }
-    public function form_content() {
-        global $forms;
-        $formType = $_GET['form'] ?? 'login';
-        ?>
-        <div style="display:grid; gap:20px; justify-content: center; padding:15px;" id="page-content">
-            <div id="form-section">
-                <?php
-               
-               switch ($formType) {
+   public function form_content() {
+    global $forms;
+    $formType = $_GET['form'] ?? 'login';
+    
+    // Start the session here if it hasn't been started in index.php
+    // session_start(); 
+    // ^ IMPORTANT: Ensure session_start() is at the very top of index.php
+
+    ?>
+    <div style="display:grid; gap:20px; justify-content: center; padding:15px;" id="page-content">
+        <div id="form-section">
+            <?php
+
+            switch ($formType) {
                 case 'signup':
                     $forms->signup();
                     break;
                 case 'login':
-                   $forms->login();
+                    $forms->login();
                     break;
                 case 'twofa':
                     $forms->twofa();
                     break;
+                
+                // START: NEW PASSWORD RESET CASES
+                case 'forgot_password':
+                    $forms->forgotPassword();
+                    break;
+                case 'resetcode':
+                    $forms->resetCodeForm();
+                    break;
+                case 'newpassword':
+                    // Authorization check: Must have successfully verified the code in the previous step
+                    if (!isset($_SESSION['pending_reset_user_id'])) {
+                        // Redirect to login if unauthorized access is attempted
+                        header("Location: index.php?form=login&error=UnauthorizedAccess");
+                        exit();
+                    }
+                    $forms->newPasswordForm();
+                    break;
+                // END: NEW PASSWORD RESET CASES
+
                 default:
                     echo "Unknown form type.";
-               }
-                ?>
-            </div>
+            }
+            ?>
+        </div>
             <!-- <div id="info-section">
                 <h2>Extra Content</h2>
                 <p>
@@ -114,5 +138,5 @@ class Components{
         <?php
     }
 
-
+    
 }
