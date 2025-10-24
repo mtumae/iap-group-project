@@ -168,8 +168,7 @@ public function newPasswordForm(){
         if (password.length >= 8) {
             strength += 1;
         }
-
-       
+        
         if (password.match(/[a-z]/) && password.match(/[A-Z]/)) {
             strength += 1;
         }

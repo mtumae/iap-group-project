@@ -54,11 +54,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])){
     
    
     if(empty($error_message)){
-        $sql = "INSERT INTO items (item_name, item_description, item_price, item_category, item_condition, item_image, seller_id, created_at) 
+       $sql = "INSERT INTO items (user_id, item_name, quantity, item_description, category_id, Price, ImageUrl, created_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
-        
-        $result = $db->execute($sql, [$item_name, $item_description, $item_price, $item_category, $item_condition, $item_image, $user_id]);
-        
+
+        $result = $db->insert($sql, [
+            $user_id,
+            $item_name,
+            $quantity,
+            $item_description,
+            $category_id,
+            $price,
+            $imageUrl
+        ]);
         if($result){
             $success_message = "Item added successfully!";
         } else {
@@ -72,7 +79,7 @@ if(isset($_GET['delete_item'])){
     $item_id = intval($_GET['delete_item']);
     
     // Verify item belongs to user
-    $item = $db->fetch("SELECT * FROM items WHERE item_id = ? AND seller_id = ?", [$item_id, $user_id]);
+    $item = $db->fetch("SELECT * FROM items WHERE item_id = ? AND user_id = ?", [$item_id, $user_id]);
     
     if($item && count($item) > 0){
       
@@ -86,7 +93,7 @@ if(isset($_GET['delete_item'])){
 }
 
 // Fetch user's items
-$user_items = $db->fetch("SELECT * FROM items WHERE seller_id = ? ORDER BY created_at DESC", [$user_id]);
+$user_items = $db->fetch("SELECT * FROM items WHERE user_id = ? ORDER BY created_at DESC", [$user_id]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
