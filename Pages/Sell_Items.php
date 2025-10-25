@@ -16,16 +16,17 @@ $user_id = $_SESSION['user_id'];
 $success_message = '';
 $error_message = '';
 
-// Handle item addition
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
     $item_name = trim($_POST['item_name']);
     $item_description = trim($_POST['item_description']);
     $quantity = intval($_POST['quantity']);
-    $category_id = intval($_POST['category_id']);
-    $price = floatval($_POST['price']);
+    $category_id = intval($_POST['item_category']); 
+    $price = floatval($_POST['item_price']);        
+    $condition = trim($_POST['item_condition']);    
     $imageUrl = '';
 
-    // ✅ Handle image upload
+    
     if (isset($_FILES['item_image']) && $_FILES['item_image']['error'] == 0) {
         $allowed_types = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
         $file_type = $_FILES['item_image']['type'];
@@ -52,18 +53,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
     }
 
     if (empty($error_message)) {
-        // ✅ Use your actual column names
-        $sql = "INSERT INTO items (user_id, item_name, quantity, item_description, category_id, Price, ImageUrl, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+      
+        $sql = "INSERT INTO items 
+                (user_id, item_name, quantity, item_description, category_id, Price, ImageUrl, item_condition, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
-        $result = $db->execute($sql, [
+        $result = $db->insert($sql, [
             $user_id,
             $item_name,
             $quantity,
             $item_description,
             $category_id,
             $price,
-            $imageUrl
+            $imageUrl,
+            $condition
         ]);
 
         if ($result) {
@@ -74,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
     }
 }
 
-// Handle item deletion
 if (isset($_GET['delete_item'])) {
     $item_id = intval($_GET['delete_item']);
 
@@ -565,6 +567,11 @@ body {
                 </div>
 
                 <div class="form-group">
+                    <label for="quantity">Quantity *</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                </div>
+
+                <div class="form-group">
                     <label for="item_description">Description *</label>
                     <textarea id="item_description" name="item_description" rows="4" required maxlength="500"></textarea>
                     <small>Maximum 500 characters</small>
@@ -578,6 +585,7 @@ body {
                     </div>
                     <small>Supported formats: JPG, PNG, GIF (Max 5MB)</small>
                 </div>
+
 
                 <button type="submit" name="add_item" class="btn-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
