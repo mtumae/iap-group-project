@@ -2,7 +2,6 @@
 session_start();
 require_once 'forms/forms.php';
 require_once 'components/components.php';
-require_once 'config.php';
 $form = new Forms();
 $component = new Components();
 

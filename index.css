@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+    background: #212529;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #fff;
     margin: 0;
@@ -7,7 +7,7 @@ body {
 }
 
 header {
-  
+    background: #23272b;
     border-radius: 0 0 16px 16px;
     text-align: center;
     padding: 32px 0 16px 0;
@@ -35,7 +35,7 @@ header h1 {
 }
 
 form {
-  
+    background: #23272b; 
     border-radius: 16px;
     padding: 32px 32px 16px 32px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.2);
@@ -102,7 +102,6 @@ input.form-control:focus {
 footer {
     margin-top: 32px;
     text-align: center;
-    background-color: black;
     color: #b0b0b0;
     font-size: 0.95rem;
 }

@@ -1,11 +1,8 @@
 <?php
 
 class Forms{
-    
-
     public function signup(){
         ?>
-        <form  action ="Forms/signup_action.php" method="POST">
         <form  action ="Forms/signup_action.php" method="POST">
         <h1 style="text-align:center;">Sign up</h1>
             <div class="form-group">
@@ -27,9 +24,10 @@ class Forms{
             <div id="login-redirect-container">
                     <a href="?form=login">Already have an account? Login</a>
             </div>
-            </div>
+    </div>
         </form>
         <?php
+
     }
 
     public function login() {
@@ -170,8 +168,7 @@ public function newPasswordForm(){
         if (password.length >= 8) {
             strength += 1;
         }
-
-       
+        
         if (password.match(/[a-z]/) && password.match(/[A-Z]/)) {
             strength += 1;
         }
