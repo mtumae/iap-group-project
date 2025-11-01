@@ -92,7 +92,7 @@ if (isset($_GET['delete_item'])) {
     }
 }
 
-// Fetch user's listed items
+
 $user_items = $db->fetch("SELECT * FROM items WHERE user_id = ? ORDER BY created_at DESC", [$user_id]);
 ?>
 

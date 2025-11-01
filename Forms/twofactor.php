@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect to dashboard
         //header("Location: /IAP_PROJECT/users.php");
-        header("Location: /iap-group-project/users.php");
+        header("Location: /iap-group-project/pages/my_listings.php");
         exit();
     } else {
         $error = "Invalid or expired verification code.";

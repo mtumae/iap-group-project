@@ -4,7 +4,6 @@ $conf['site_name'] = 'StrathHub';
 $conf['site_url'] = 'http://localhost';
 $conf['admin_email'] = 'strathmart@gmail.com';
 
-// Database Configuration
 $conf['db_type'] = 'mysqli';
 
 
