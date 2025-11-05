@@ -6,6 +6,42 @@ $components = new Components();
 $db = new Database($conf);
 $db->connect(); 
 
+$whereClauses = [];
+$params = [];
+
+
+if (isset($_GET['category']) && $_GET['category'] !== 'All') {
+    $whereClauses[] = "item_category = ?";
+    $params[] = $_GET['category'];
+}
+
+
+if (isset($_GET['condition']) && $_GET['condition'] !== 'All') {
+    $whereClauses[] = "item_condition = ?";
+    $params[] = $_GET['condition'];
+}
+
+if (isset($_GET['price']) && $_GET['price'] !== 'All') {
+    if ($_GET['price'] == '10000+') {
+        $whereClauses[] = "item_price > ?";
+        $params[] = 10000;
+    } else {
+        [$min, $max] = explode('-', $_GET['price']);
+        $whereClauses[] = "item_price BETWEEN ? AND ?";
+        $params[] = $min;
+        $params[] = $max;
+    }
+}
+
+$whereSQL = "";
+if (!empty($whereClauses)) {
+    $whereSQL = "WHERE " . implode(" AND ", $whereClauses);
+}
+
+$query = "SELECT * FROM items $whereSQL ORDER BY id DESC";
+$items = $db->fetch($query, $params);
+
+
 $items = $db->fetch("SELECT * FROM items"); 
 ?>
 <!DOCTYPE html>
@@ -290,7 +326,9 @@ $components->header();
             </button>
         </div>
         
+        
         <div class="filter-div">
+        <form>
             <select name="categories">
                 <option value="All">All Categories</option>
                 <option value="Textbooks">Textbooks</option>
@@ -312,6 +350,7 @@ $components->header();
                 <option value="5000-10000">Ksh.5,000 to Ksh.10,000</option>
                 <option value="10000+">Over Ksh.10,000</option>
             </select>
+        </form>
             <select name="sort">
                 <option value="newest">Newest First</option>
                 <option value="relevance">Relevance</option>
@@ -378,7 +417,7 @@ $components->header();
                              (strlen($item['item_description']) > 80 ? '...' : ''); 
                         ?>
                     </p>
-                    <a href="item-details.php?id=<?php echo $item['id']; ?>" class="view-details-btn">
+                    <a href="item_details.php?id=<?php echo $item['id']; ?>" class="view-details-btn">
                         View Details
                     </a>
                 </div>

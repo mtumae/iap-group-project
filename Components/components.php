@@ -1,5 +1,5 @@
 <?php
-
+// session_start();
 require_once __DIR__ . '/../ClassAutoLoad.php';
 $form = new Forms();
 $forms = new Forms();
@@ -37,8 +37,14 @@ class Components{
                 <li class="nav-item">
                 <a class="nav-link"  href="#">Buy</a>
                 </li>
+                <?php
+                
+                $sellLink = isset($_SESSION['user_id'])
+                    ? '/iap-group-project/Pages/my_listings.php'
+                    : '/iap-group-project/Pages/sell.php';
+                    ?>
                 <li>
-                    <a class="nav-link"  href="/iap-group-project/Pages/sell.php">Sell</a>
+                     <a class="nav-link" href="<?= $sellLink ?>">Sell</a>
                 </li>
                
             </ul>

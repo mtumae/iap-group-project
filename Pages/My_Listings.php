@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
     $item_name = trim($_POST['item_name']);
     $item_description = trim($_POST['item_description']);
     $quantity = intval($_POST['quantity']);
-    $category_id = intval($_POST['item_category']); 
+    $category_name = trim($_POST['item_category']); 
     $price = floatval($_POST['item_price']);        
     $condition = trim($_POST['item_condition']);    
     $imageUrl = '';
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
     if (empty($error_message)) {
       
         $sql = "INSERT INTO items 
-                (user_id, item_name, quantity, item_description, category_id, Price, ImageUrl, item_condition, created_at)
+                (user_id, item_name, quantity, item_description, item_category, Price, ImageUrl, item_condition, created_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
         $result = $db->insert($sql, [
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_item'])) {
             $item_name,
             $quantity,
             $item_description,
-            $category_id,
+            $category_name,
             $price,
             $imageUrl,
             $condition
@@ -93,8 +93,7 @@ if (isset($_GET['delete_item'])) {
 }
 
 
-$user_items = $db->fetch("SELECT * FROM items WHERE user_id = ? ORDER BY created_at DESC", [$user_id]);
-?>
+$user_items = $db->fetch("SELECT *, Price as item_price, ImageUrl as item_image FROM items WHERE user_id = ? ORDER BY created_at DESC", [$user_id]);?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -537,14 +536,15 @@ body {
                     <div class="form-group">
                         <label for="item_category">Category *</label>
                         <select id="item_category" name="item_category" required>
-                            <option value="">Select Category</option>
-                            <option value="Textbooks">Textbooks</option>
-                            <option value="Laptops">Laptops</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="Accessories">Tech Accessories</option>
-                            <option value="Tickets">Concert Tickets</option>
-                            <option value="Jewellery">Jewellery</option>
-                            <option value="Other">Other</option>
+                        <option value="">Select Category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Footwear">Footwear</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Appliances">Appliances</option>
+                                <option value="Music">Music</option>
+                                <option value="Home Decor">Home Decor</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Clothing">Clothing</option>
                         </select>
                     </div>
 
@@ -635,14 +635,14 @@ body {
                                 <p class="item-price">Ksh. <?php echo $itemPrice; ?></p>
                                 <p class="item-description"><?php echo htmlspecialchars(substr($item['item_description'], 0, 100)) . (strlen($item['item_description']) > 100 ? '...' : ''); ?></p>
                                 <div class="item-actions">
-                                    <a href="edit-item.php?id=<?php echo $item['item_id']; ?>" class="btn-edit">
+                                    <a href="edit-item.php?id=<?php echo $item['id']; ?>" class="btn-edit">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                         </svg>
                                         Edit
                                     </a>
-                                    <a href="?delete_item=<?php echo $item['item_id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this item?')">
+                                    <a href="?delete_item=<?php echo $item['id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this item?')">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <polyline points="3 6 5 6 21 6"></polyline>
                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
