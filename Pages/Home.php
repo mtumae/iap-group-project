@@ -5,44 +5,83 @@ require_once __DIR__ . '/../DBConnection.php';
 $components = new Components();
 $db = new Database($conf);
 $db->connect(); 
+$categories = $db->fetch("SELECT * FROM categories ORDER BY category_name ASC");
+
+$whereClauses = [];
 
 $whereClauses = [];
 $params = [];
 
+// --- Search Filter (New!) ---
+if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
+    $searchTerm = '%' . trim($_GET['search']) . '%';
+    // Search both item name and description
+    $whereClauses[] = "(item_name LIKE ? OR item_description LIKE ?)";
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+}
 
-if (isset($_GET['category']) && $_GET['category'] !== 'All') {
+// --- Category Filter ---
+if (isset($_GET['category']) && $_GET['category'] !== 'All' && !empty($_GET['category'])) {
     $whereClauses[] = "item_category = ?";
     $params[] = $_GET['category'];
 }
 
-
-if (isset($_GET['condition']) && $_GET['condition'] !== 'All') {
-    $whereClauses[] = "item_condition = ?";
-    $params[] = $_GET['condition'];
+// --- Condition Filter ---
+// --- Condition Filter (Revised Logic) ---
+if (isset($_GET['condition']) && $_GET['condition'] !== 'All' && !empty($_GET['condition'])) {
+    if ($_GET['condition'] == 'Used') {
+        // If "Used" is selected, show everything that is NOT 'New'
+        $whereClauses[] = "item_condition != ?";
+        $params[] = 'New';
+    } else {
+        // Otherwise, it must be 'New', so do an exact match
+        $whereClauses[] = "item_condition = ?";
+        $params[] = $_GET['condition']; // This will be 'New'
+    }
 }
 
-if (isset($_GET['price']) && $_GET['price'] !== 'All') {
+// --- Price Filter (Fixed 'Price' column) ---
+if (isset($_GET['price']) && $_GET['price'] !== 'All' && !empty($_GET['price'])) {
     if ($_GET['price'] == '10000+') {
-        $whereClauses[] = "item_price > ?";
+        $whereClauses[] = "Price > ?"; // <-- Fixed
         $params[] = 10000;
     } else {
         [$min, $max] = explode('-', $_GET['price']);
-        $whereClauses[] = "item_price BETWEEN ? AND ?";
+        $whereClauses[] = "Price BETWEEN ? AND ?"; // <-- Fixed
         $params[] = $min;
         $params[] = $max;
     }
 }
 
+// --- Build WHERE Clause ---
 $whereSQL = "";
 if (!empty($whereClauses)) {
     $whereSQL = "WHERE " . implode(" AND ", $whereClauses);
 }
 
-$query = "SELECT * FROM items $whereSQL ORDER BY id DESC";
+// --- Build ORDER BY (Sort) Clause (New!) ---
+$sortSQL = "ORDER BY id DESC"; // Default (Newest)
+if (isset($_GET['sort'])) {
+    switch ($_GET['sort']) {
+        case 'price-low-high':
+            $sortSQL = "ORDER BY Price ASC";
+            break;
+        case 'price-high-low':
+            $sortSQL = "ORDER BY Price DESC";
+            break;
+        case 'relevance':
+            // Add relevance logic if you have it, else it will just be default
+            break;
+    }
+}
+
+// --- Build Final Query ---
+$query = "SELECT * FROM items $whereSQL $sortSQL";
 $items = $db->fetch($query, $params);
 
-
-$items = $db->fetch("SELECT * FROM items"); 
+// *** DO NOT ADD THE OVERWRITE LINE HERE ***
+// $items = $db->fetch("SELECT * FROM items");  <-- THIS WAS THE BUG. IT'S GONE.
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -313,12 +352,17 @@ footer p {
 $components->header();
 ?>
 <body>
-    <div class="hero-container-div">
-        <h1>Find What You Need</h1>
-        <p class="hero-subtitle">View Products from students around Strath</p>
+  <div class="hero-container-div">
+    <h1>Find What You Need</h1>
+    <p class="hero-subtitle">View Products from students around Strath</p>
+    
+    <form method="GET" action="Home.php" id="mainSearchAndFilterForm">
+        
         <div class="search-container">
-            <input type="text" placeholder="Search for textbooks, electronics etc..." class="search-bar">
-            <button class="search-btn">
+            <input type="text" name="search" placeholder="Search for textbooks, electronics etc..." class="search-bar" 
+                   value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+            
+            <button type="submit" class="search-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
@@ -326,39 +370,41 @@ $components->header();
             </button>
         </div>
         
-        
         <div class="filter-div">
-        <form>
-            <select name="categories">
+            <select name="category" onchange="this.form.submit()">
                 <option value="All">All Categories</option>
-                <option value="Textbooks">Textbooks</option>
-                <option value="Laptops">Laptops</option>
-                <option value="Clothing">Clothing</option>
-                <option value="Accessories">Tech Accessories</option>
-                <option value="Tickets">Concert Tickets</option>
-                <option value="Jewellery">Jewellery</option>
+                <?php foreach ($categories as $cat): ?>
+                    <option 
+                        value="<?php echo htmlspecialchars($cat['category_name']); ?>"
+                        <?php echo (($_GET['category'] ?? '') == $cat['category_name']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($cat['category_name']); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
-            <select name="conditions">
+            
+            <select name="condition" onchange="this.form.submit()">
                 <option value="All">All Conditions</option>
-                <option value="New">New</option>
-                <option value="Used">Used</option>
+                <option value="New" <?php echo (($_GET['condition'] ?? '') == 'New') ? 'selected' : ''; ?>>New</option>
+                <option value="Used" <?php echo (($_GET['condition'] ?? '') == 'Used') ? 'selected' : ''; ?>>Used</option>
             </select>
-            <select name="prices">
+            
+            <select name="price" onchange="this.form.submit()">
                 <option value="All">Price Range</option>
-                <option value="0-1000">Under Ksh.1,000</option>
-                <option value="1000-5000">Ksh.1,000 to Ksh.5,000</option>
-                <option value="5000-10000">Ksh.5,000 to Ksh.10,000</option>
-                <option value="10000+">Over Ksh.10,000</option>
+                <option value="0-1000" <?php echo (($_GET['price'] ?? '') == '0-1000') ? 'selected' : ''; ?>>Under Ksh.1,000</option>
+                <option value="1000-5000" <?php echo (($_GET['price'] ?? '') == '1000-5000') ? 'selected' : ''; ?>>Ksh.1,000 to Ksh.5,000</option>
+                <option value="5000-10000" <?php echo (($_GET['price'] ?? '') == '5000-10000') ? 'selected' : ''; ?>>Ksh.5,000 to Ksh.10,000</option>
+                <option value="10000+" <?php echo (($_GET['price'] ?? '') == '10000+') ? 'selected' : ''; ?>>Over Ksh.10,000</option>
             </select>
-        </form>
-            <select name="sort">
-                <option value="newest">Newest First</option>
-                <option value="relevance">Relevance</option>
-                <option value="price-low-high">Price: Low to High</option>
-                <option value="price-high-low">Price: High to Low</option>
+            
+            <select name="sort" onchange="this.form.submit()">
+                <option value="newest" <?php echo (($_GET['sort'] ?? '') == 'newest') ? 'selected' : ''; ?>>Newest First</option>
+                <option value="relevance" <?php echo (($_GET['sort'] ?? '') == 'relevance') ? 'selected' : ''; ?>>Relevance</option>
+                <option value="price-low-high" <?php echo (($_GET['sort'] ?? '') == 'price-low-high') ? 'selected' : ''; ?>>Price: Low to High</option>
+                <option value="price-high-low" <?php echo (($_GET['sort'] ?? '') == 'price-high-low') ? 'selected' : ''; ?>>Price: High to Low</option>
             </select>
         </div> 
-    </div>
+
+    </form> </div>
     
     <!-- <div class="items-display">
         <?php 
