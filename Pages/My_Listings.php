@@ -87,7 +87,7 @@ if (isset($_GET['delete_item'])) {
             unlink($item[0]['ImageUrl']);
         }
 
-        $db->execute("DELETE FROM items WHERE id = ?", [$item_id]);
+        $db->delete("DELETE FROM items WHERE id = ?", [$item_id]);
         $success_message = "Item deleted successfully!";
     }
 }
@@ -121,9 +121,36 @@ body {
     margin: 0 auto;
     padding: 30px 20px;
 }
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #dc3545;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(220, 53, 69, 0.2);
+}
 
 /* Page Header */
 .page-header {
+    display: flex;
+    justify-content: space-between;
     text-align: center;
     margin-bottom: 40px;
 }
@@ -491,6 +518,78 @@ body {
         flex-direction: column;
     }
 }
+
+/* Logout Confirmation Modal */
+.logout-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.logout-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+.logout-modal-content h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.logout-modal-content p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.btn-cancel,
+.btn-logout {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-cancel {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-cancel:hover {
+    background-color: #ccc;
+}
+
+.btn-logout {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-logout:hover {
+    background-color: #c82333;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
     </style>
 </head>
 <body>
@@ -500,6 +599,15 @@ body {
     <div class="page-header">
         <h1>My Listings</h1>
         <p>Manage your items and add new listings</p>
+        <a href="logout.php" class="logout-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+    Log Out
+    </a>
+
     </div>
 
     <?php if($success_message): ?>
@@ -685,7 +793,36 @@ setTimeout(function() {
         }, 300);
     });
 }, 5000);
+
+
+document.querySelector('.logout-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('logoutModal').style.display = 'flex';
+});
+
+document.getElementById('cancelLogout').addEventListener('click', function() {
+    document.getElementById('logoutModal').style.display = 'none';
+});
+
+window.addEventListener('click', function(e) {
+    if (e.target.id === 'logoutModal') {
+        document.getElementById('logoutModal').style.display = 'none';
+    }
+});
+
+
 </script>
+
+<div id="logoutModal" class="logout-modal">
+  <div class="logout-modal-content">
+    <h3>Confirm Logout</h3>
+    <p>Are you sure you want to log out?</p>
+    <div class="modal-actions">
+      <button id="cancelLogout" class="btn-cancel">Cancel</button>
+      <a href="logout.php" class="btn-logout">Log Out</a>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

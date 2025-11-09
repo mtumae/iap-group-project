@@ -1,5 +1,8 @@
 <?php
 // session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../ClassAutoLoad.php';
 $form = new Forms();
 $forms = new Forms();
@@ -49,9 +52,53 @@ class Components{
                
             </ul>
             <span class="navbar-text">
-                <a href="?form=login"><button class="btn btn-primary" type="button">Browse</button></a>
-                <a href="?form=signup"><button class="btn btn-primary" type="button" style="background-color:black">Sell Now</button></a>
-        </div>
+<!-- Add this to your header navigation -->
+<a href="/iap-group-project/pages/cart.php" class="nav-cart-link">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
+    <span class="cart-badge">
+        <?php 
+        $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+        echo $cartCount > 0 ? $cartCount : '0';
+        ?>
+    </span>
+    Cart
+</a>
+
+<style>
+.nav-cart-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.nav-cart-link:hover {
+    color: #007bff;
+}
+
+.cart-badge {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+</style>        </div>
         </div>
         </nav>
         <?php
