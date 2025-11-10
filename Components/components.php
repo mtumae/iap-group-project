@@ -1,12 +1,15 @@
 <?php
 // session_start();
 require_once __DIR__ . '/../ClassAutoLoad.php';
-$form = new Forms();
+// $form = new Forms(); // This was a duplicate
 $forms = new Forms();
-class Components{
-    public function header(){
-        ?>
-         <!DOCTYPE html>
+
+class Components {
+
+    public function header() {
+        // Use Heredoc to echo all your HTML
+        echo <<<HTML
+        <!DOCTYPE html>
         <html lang="en" data-bs-theme="auto">
         <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -20,15 +23,15 @@ class Components{
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
             <style>
-  a.nav-link {
-    color: #9C9C9C;
-    text-decoration: none;
-  }
+              a.nav-link {
+                color: #9C9C9C;
+                text-decoration: none;
+              }
 
-  a.nav-link:hover {
-    color: white;
-  }
-</style>
+              a.nav-link:hover {
+                color: white;
+              }
+            </style>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li class="nav-item">
@@ -37,90 +40,83 @@ class Components{
                 <li class="nav-item">
                 <a class="nav-link"  href="#">Buy</a>
                 </li>
-                <?php
-                
-                $sellLink = isset($_SESSION['user_id'])
-                    ? '/iap-group-project/Pages/my_listings.php'
-                    : '/iap-group-project/Pages/sell.php';
-                    ?>
+HTML;
+
+        // This PHP logic needs to be separate from the Heredoc
+        $sellLink = isset($_SESSION['user_id'])
+            ? '/iap-group-project/Pages/my_listings.php'
+            : '/iap-group-project/Pages/sell.php';
+        
+        // We continue the echo
+        echo <<<HTML
                 <li>
-                     <a class="nav-link" href="<?= $sellLink ?>">Sell</a>
+                     <a class="nav-link" href="$sellLink">Sell</a>
                 </li>
                
             </ul>
             <span class="navbar-text">
                 <a href="?form=login"><button class="btn btn-primary" type="button">Browse</button></a>
                 <a href="?form=signup"><button class="btn btn-primary" type="button" style="background-color:black">Sell Now</button></a>
+            </span>
         </div>
         </div>
         </nav>
-        <?php
-
+HTML;
     }
-   public function form_content() {
-    global $forms;
-    $formType = $_GET['form'] ?? 'login';
-    
-    // Start the session here if it hasn't been started in index.php
-    // session_start(); 
-    // ^ IMPORTANT: Ensure session_start() is at the very top of index.php
 
-    ?>
-    <div style="display:grid; gap:20px; justify-content: center; padding:15px;" id="page-content">
-        <div id="form-section">
-            <?php
+    public function form_content() {
+        global $forms;
+        $formType = $_GET['form'] ?? 'login';
+        
+        // Start Heredoc
+        echo <<<HTML
+        <div style="display:grid; gap:20px; justify-content: center; padding:15px;" id="page-content">
+            <div id="form-section">
+HTML;
 
-            switch ($formType) {
-                case 'signup':
-                    $forms->signup();
-                    break;
-                case 'login':
-                    $forms->login();
-                    break;
-                case 'twofa':
-                    $forms->twofa();
-                    break;
-                
-                // START: NEW PASSWORD RESET CASES
-                case 'forgot_password':
-                    $forms->forgotPassword();
-                    break;
-                case 'resetcode':
-                    $forms->resetCodeForm();
-                    break;
-                case 'newpassword':
-                    // Authorization check: Must have successfully verified the code in the previous step
-                    if (!isset($_SESSION['pending_reset_user_id'])) {
-                        // Redirect to login if unauthorized access is attempted
-                        header("Location: index.php?form=login&error=UnauthorizedAccess");
-                        exit();
-                    }
-                    $forms->newPasswordForm();
-                    break;
-                // END: NEW PASSWORD RESET CASES
+        // This switch logic runs *inside* PHP
+        switch ($formType) {
+            case 'signup':
+                $forms->signup();
+                break;
+            case 'login':
+                $forms->login();
+                break;
+            case 'twofa':
+                $forms->twofa();
+                break;
+            
+            // START: NEW PASSWORD RESET CASES
+            case 'forgot_password':
+                $forms->forgotPassword();
+                break;
+            case 'resetcode':
+                $forms->resetCodeForm();
+                break;
+            case 'newpassword':
+                // Authorization check
+                if (!isset($_SESSION['pending_reset_user_id'])) {
+                    header("Location: index.php?form=login&error=UnauthorizedAccess");
+                    exit();
+                }
+                $forms->newPasswordForm();
+                break;
+            // END: NEW PASSWORD RESET CASES
 
-                default:
-                    echo "Unknown form type.";
-            }
-            ?>
+            default:
+                echo "Unknown form type.";
+        }
+        
+        // Continue Heredoc
+        echo <<<HTML
+            </div>    
         </div>
-            <!-- <div id="info-section">
-                <h2>Extra Content</h2>
-                <p>
-                    This is an additional section where you can place text, 
-                    images, or instructions for your users.  
-                    Since this version doesn’t use Bootstrap, 
-                    you can style <code>#info-section</code> and <code>#form-section</code> 
-                    in your own CSS.
-                </p>
-                <button type="button">Example button</button>
-            </div> -->
-        </div>
-        <?php
+HTML;
     }
-    public function footer(){
 
-        ?>
+    public function footer() {
+        // This is the footer code, now correctly formatted
+        echo <<<HTML
         <footer style="width:98%;">
             <div class="footer">
             <div class="row">
@@ -138,11 +134,10 @@ class Components{
             </ul>
             </div>
 
-            <!--  -->
             </div>
         </footer>
-        <?php
+HTML;
     }
 
-    
-}
+} // End of Components class
+?>
