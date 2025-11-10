@@ -67,8 +67,7 @@ HTML;
     </svg>
     <span class="cart-badge">
         <?php 
-        $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
-        echo $cartCount > 0 ? $cartCount : '0';
+              
         ?>
     </span>
     Cart
