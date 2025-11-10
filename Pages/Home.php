@@ -447,12 +447,10 @@ $components->header();
     }
     ?>
 </div>
-
-    <footer>
-        <h2>StrathMart</h2>
-        <p>The trusted Marketplace for all Stratizens to quickly and conveniently buy and sell products within campus</p>
-    </footer>
-
+ 
+    <?php
+    $components->footer();
+    ?>
     
 </body>
 </html>
