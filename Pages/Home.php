@@ -352,6 +352,7 @@ footer p {
 $components->header();
 ?>
 <body>
+
   <div class="hero-container-div">
     <h1>Find What You Need</h1>
     <p class="hero-subtitle">View Products from students around Strath</p>
@@ -406,34 +407,7 @@ $components->header();
 
     </form> </div>
     
-    <!-- <div class="items-display">
-        <?php 
-        if(!$items || count($items) == 0){
-            echo '<div class="no-items">
-                    <p>No items found.</p>
-                    <p class="subtitle">Be the first to list an item!</p>
-                  </div>';
-        } else {
-            foreach($items as $item){
-                $itemImage = !empty($item['item_image']) ? $item['item_image'] : 'images/placeholder.png';
-                $itemPrice = number_format($item['item_price'], 2);
-                ?>
-                <div class="item-card">
-                    <div class="item-image-container">
-                        <img src="<?php echo htmlspecialchars($itemImage); ?>" alt="<?php echo htmlspecialchars($item['item_name']); ?>" class="item-image">
-                    </div>
-                    <div class="item-details">
-                        <h3 class="item-name"><?php echo htmlspecialchars($item['item_name']); ?></h3>
-                        <p class="item-price">Ksh. <?php echo $itemPrice; ?></p>
-                        <p class="item-description"><?php echo htmlspecialchars(substr($item['item_description'], 0, 80)) . (strlen($item['item_description']) > 80 ? '...' : ''); ?></p>
-                        <a href="item-details.php?id=<?php echo $item['item_id']; ?>" class="view-details-btn">View Details</a>
-                    </div>
-                </div>
-                <?php
-            }
-        }
-        ?>
-    </div> -->
+    
 
     <div class="items-display">
     <?php 
@@ -444,7 +418,7 @@ $components->header();
               </div>';
     } else {
         foreach ($items as $item) {
-            // Match to actual DB columns
+            
             $itemImage = !empty($item['ImageUrl']) ? $item['ImageUrl'] : 'images/placeholder.png';
             $itemPrice = number_format($item['Price'], 2);
             ?>
@@ -478,5 +452,7 @@ $components->header();
         <h2>StrathMart</h2>
         <p>The trusted Marketplace for all Stratizens to quickly and conveniently buy and sell products within campus</p>
     </footer>
+
+    
 </body>
 </html>

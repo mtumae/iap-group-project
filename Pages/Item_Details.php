@@ -495,22 +495,14 @@ $relatedItems = $db->fetch("SELECT * FROM items
     <?php $components->header(); ?>
 
     <div class="container">
-        <div class="breadcrumb">
-            <a href="index.php">Home</a>
-            <span>/</span>
-            <a href="index.php?category=<?php echo urlencode($item['item_category'] ?? 'General'); ?>">
-                <?php echo htmlspecialchars($item['item_category'] ?? 'General'); ?>
-            </a>
-            <span>/</span>
-            <span><?php echo htmlspecialchars($item['item_name']); ?></span>
-        </div>
+       
 
         <div class="item-details-container">
          
             <div class="image-section">
                 <div class="main-image-container">
                     <?php if (!empty($item['item_condition']) && $item['item_condition'] === 'New'): ?>
-                    <span class="image-badge">✨ Brand New</span>
+                    <span class="image-badge"> Brand New</span>
                     <?php endif; ?>
                     <img src="<?php echo htmlspecialchars($item['ImageUrl'] ?: 'images/placeholder.png'); ?>" 
                          alt="<?php echo htmlspecialchars($item['item_name']); ?>" 
@@ -569,7 +561,7 @@ $relatedItems = $db->fetch("SELECT * FROM items
                 </div>
 
                 <div class="description-section">
-                    <h2>📝 Description</h2>
+                    <h2> Description</h2>
                     <p class="description-text"><?php echo nl2br(htmlspecialchars($item['item_description'])); ?></p>
                 </div>
 
@@ -640,27 +632,42 @@ $relatedItems = $db->fetch("SELECT * FROM items
                 </div>
 
                 <div class="action-buttons">
-                    <a href="checkout.php?id=<?php echo $item['id']; ?>" class="btn btn-primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        Proceed to Checkout
-                    </a>
-                    <button class="btn btn-secondary" onclick="contactSeller()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        Message Seller
-                    </button>
-                    <button class="btn btn-outline" onclick="history.back()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="19" y1="12" x2="5" y2="12"></line>
-                            <polyline points="12 19 5 12 12 5"></polyline>
-                        </svg>
-                        Back to Listings
-                    </button>
+                    <!-- In item-details.php, replace action buttons section -->
+<div class="action-buttons">
+    <a href="cart.php?add=1&id=<?php echo $item['id']; ?>" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        Add to Cart
+    </a>
+    
+    <a href="checkout.php?id=<?php echo $item['id']; ?>" class="btn btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        Buy Now
+    </a>
+    
+    <button class="btn btn-secondary" onclick="contactSeller()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Message Seller
+    </button>
+    
+    <button class="btn btn-outline" onclick="history.back()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Listings
+    </button>
+</div>
+                    
                 </div>
             </div>
         </div>
@@ -670,7 +677,7 @@ $relatedItems = $db->fetch("SELECT * FROM items
             <h2>You May Also Like</h2>
             <div class="related-grid">
                 <?php foreach ($relatedItems as $related): ?>
-                <a href="item-details.php?id=<?php echo $related['id']; ?>" class="related-card">
+                <a href="item_details.php?id=<?php echo $related['id']; ?>" class="related-card">
                     <img src="<?php echo htmlspecialchars($related['ImageUrl'] ?: 'images/placeholder.png'); ?>" 
                          alt="<?php echo htmlspecialchars($related['item_name']); ?>" 
                          class="related-image">
