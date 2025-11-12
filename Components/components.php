@@ -103,6 +103,27 @@ HTML;
     min-width: 20px;
     text-align: center;
 }
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+footer h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+footer p {
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: #ccc;
+}
+
 </style>        </div>
         </div>
         </nav>
@@ -187,7 +208,40 @@ HTML;
         </footer>
 HTML;
     }
-    
+    public function admin_header() {
+        echo <<<HTML
+        <!DOCTYPE html>
+        <html lang="en" data-bs-theme="auto">
+        <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        </head>
+        <nav class="navbar navbar-expand-lg " style="background-color:#0F172A">
+        <div class="container-fluid" style="background-color:#0F172A">
+            <a class="navbar-brand" href="#"><span style="color: #ffffff">Strath</span><span style="color:#DC3545">Mart-Admin</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+            <style>
+              a.nav-link { color: #9C9C9C; text-decoration: none; }
+              a.nav-link:hover { color: white; }
+            </style>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-} // End of Components class
+                <li class="nav-item">
+                <a class="nav-link"  href="/iap-group-project/Pages/admin_dashboard.php?view=users">Users</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link"  href="/iap-group-project/Pages/admin_dashboard.php?view=reports">Reports</a>
+                </li>
+            </ul>
+           
+            </div>
+        </div>
+        </nav>
+HTML;
+    }
+
+} 
 ?>
