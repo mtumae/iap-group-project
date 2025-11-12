@@ -1,12 +1,13 @@
 <?php
+// This file assumes $db is already defined by admin_dashboard.php
 
 try {
-   
+    // --- 1. GET ALL THE STATS ---
     $userCount = $db->fetch("SELECT COUNT(*) as count FROM users")[0]['count'];
     $listingCount = $db->fetch("SELECT COUNT(*) as count FROM items")[0]['count'];
     $totalValue = $db->fetch("SELECT SUM(price) as sum FROM items")[0]['sum'];
 
-   
+    // --- 2. Table Stat ---
     $itemsByitem_category = $db->fetch(
         "SELECT item_category, COUNT(*) as count 
          FROM items 
@@ -14,7 +15,7 @@ try {
          GROUP BY item_category"
     );
 
-    
+    // --- 3. Chart 1: Signups Over Time ---
     $signups = $db->fetch(
         "SELECT DATE(created_at) AS signup_date, COUNT(id) AS new_users
          FROM users
@@ -30,7 +31,7 @@ try {
         $signup_data[] = $day['new_users'];
     }
 
-    
+    // --- 4. Chart 2: User Role Distribution ---
     $roles = $db->fetch(
         "SELECT r.role_name, COUNT(u.id) AS count
          FROM users u
@@ -80,7 +81,7 @@ try {
         <div class="col-md-4 mb-3">
             <div class="card text-white bg-info">
                 <div class="card-body">
-                    <h3 class="card-title">Ksh<?= number_format($totalValue, 2) ?></h3>
+                    <h3 class="card-title">Ksh<?= number_format($totalValue ?? 0, 2) ?></h3>
                     <p class="card-text">Total Item Prices</p>
                 </div>
             </div>
@@ -135,38 +136,29 @@ try {
 
 <style>
 @media print {
-   
     .navbar, .btn, h1 {
         display: none !important;
     }
-    
-
     .container, .container-fluid {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        width: 100% !important; margin: 0 !important; padding: 0 !important;
     }
-    
- 
     .card {
-        border: 1px solid #ddd !important;
-        break-inside: avoid; 
+        border: 1px solid #ddd !important; break-inside: avoid; 
     }
 }
 </style>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
 
--
+    // --- Pass PHP data to JavaScript ---
     const signupLabels = <?php echo json_encode($signup_labels); ?>;
     const signupData = <?php echo json_encode($signup_data); ?>;
     
     const roleLabels = <?php echo json_encode($role_labels); ?>;
     const roleData = <?php echo json_encode($role_data); ?>;
 
-    
+    // --- Render Signups Line Chart ---
     const ctxSignups = document.getElementById('signupsChart').getContext('2d');
     new Chart(ctxSignups, {
         type: 'line',
@@ -190,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
+    // --- Render Roles Pie Chart ---
     const ctxRoles = document.getElementById('rolesChart').getContext('2d');
     new Chart(ctxRoles, {
         type: 'pie',
