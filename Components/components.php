@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/../ClassAutoLoad.php';
-// $form = new Forms(); // This was a duplicate
+
 $forms = new Forms();
 
 class Components {
@@ -40,9 +40,7 @@ class Components {
                 <li class="nav-item">
                 <a class="nav-link"  href="/iap-group-project/Pages/Home.php">Home</a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link"  href="#">Buy</a>
-                </li>
+                
 HTML;
 
         // This PHP logic needs to be separate from the Heredoc
