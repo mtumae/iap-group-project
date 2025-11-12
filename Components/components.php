@@ -159,6 +159,8 @@ HTML;
 HTML;
     }
 
+    
+
     public function footer() {
         // This is the footer code, now correctly formatted
         echo <<<HTML
@@ -185,6 +187,7 @@ HTML;
         </footer>
 HTML;
     }
+    
 
 } // End of Components class
 ?>

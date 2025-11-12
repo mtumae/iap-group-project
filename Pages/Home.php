@@ -7,12 +7,12 @@ $db = new Database($conf);
 $db->connect(); 
 $categories = $db->fetch("SELECT * FROM categories ORDER BY category_name ASC");
 
-$whereClauses = [];
+
 
 $whereClauses = [];
 $params = [];
 
-// --- Search Filter (New!) ---
+// Search Filter  
 if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
     $searchTerm = '%' . trim($_GET['search']) . '%';
     // Search both item name and description
@@ -21,27 +21,27 @@ if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
     $params[] = $searchTerm;
 }
 
-// --- Category Filter ---
+// Category Filter 
 if (isset($_GET['category']) && $_GET['category'] !== 'All' && !empty($_GET['category'])) {
     $whereClauses[] = "item_category = ?";
     $params[] = $_GET['category'];
 }
 
-// --- Condition Filter ---
-// --- Condition Filter (Revised Logic) ---
+// Condition Filter
+
 if (isset($_GET['condition']) && $_GET['condition'] !== 'All' && !empty($_GET['condition'])) {
     if ($_GET['condition'] == 'Used') {
-        // If "Used" is selected, show everything that is NOT 'New'
+        
         $whereClauses[] = "item_condition != ?";
         $params[] = 'New';
     } else {
-        // Otherwise, it must be 'New', so do an exact match
+        
         $whereClauses[] = "item_condition = ?";
-        $params[] = $_GET['condition']; // This will be 'New'
+        $params[] = $_GET['condition']; // will be New
     }
 }
 
-// --- Price Filter (Fixed 'Price' column) ---
+// Price filer
 if (isset($_GET['price']) && $_GET['price'] !== 'All' && !empty($_GET['price'])) {
     if ($_GET['price'] == '10000+') {
         $whereClauses[] = "Price > ?"; // <-- Fixed
@@ -54,13 +54,13 @@ if (isset($_GET['price']) && $_GET['price'] !== 'All' && !empty($_GET['price']))
     }
 }
 
-// --- Build WHERE Clause ---
+//Build WHERE Clause
 $whereSQL = "";
 if (!empty($whereClauses)) {
     $whereSQL = "WHERE " . implode(" AND ", $whereClauses);
 }
 
-// --- Build ORDER BY (Sort) Clause (New!) ---
+// Sorting
 $sortSQL = "ORDER BY id DESC"; // Default (Newest)
 if (isset($_GET['sort'])) {
     switch ($_GET['sort']) {
@@ -71,17 +71,16 @@ if (isset($_GET['sort'])) {
             $sortSQL = "ORDER BY Price DESC";
             break;
         case 'relevance':
-            // Add relevance logic if you have it, else it will just be default
+          
             break;
     }
 }
 
-// --- Build Final Query ---
+// The Final Query 
 $query = "SELECT * FROM items $whereSQL $sortSQL";
 $items = $db->fetch($query, $params);
 
-// *** DO NOT ADD THE OVERWRITE LINE HERE ***
-// $items = $db->fetch("SELECT * FROM items");  <-- THIS WAS THE BUG. IT'S GONE.
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
